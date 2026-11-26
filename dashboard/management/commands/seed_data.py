@@ -65,8 +65,16 @@ class Command(BaseCommand):
             c = dict(c)
             sol = c.pop('solubility', '')
             comp = composition(c['formula'])
-            obj, _ = Compound.objects.update_or_create(name=c['name'], added_by=None,
-                                                       defaults={**c, 'molar_mass': comp['molar_mass']})
+            fields = {**c, 'molar_mass': comp['molar_mass']}
+            # filter().first() rather than update_or_create: a user-added compound whose owner was
+            # deleted also has added_by=None, and a duplicate name must not crash the deploy build.
+            obj = Compound.objects.filter(name=c['name'], added_by=None).order_by('id').first()
+            if obj:
+                for k, v in fields.items():
+                    setattr(obj, k, v)
+                obj.save()
+            else:
+                obj = Compound.objects.create(added_by=None, **fields)
             obj.properties.all().delete()
             ChemicalProperty.objects.bulk_create([
                 ChemicalProperty(compound=obj, name='Molar mass', value=f"{comp['molar_mass']} g/mol", note='calculated from IUPAC atomic weights'),
