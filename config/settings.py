@@ -9,26 +9,28 @@ from django.contrib.messages import constants as messages
 BASE_DIR = Path(__file__).resolve().parent.parent
 SEED_DIR = BASE_DIR / 'database' / 'seed'
 
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'dev-only-insecure-key-change-me-0c8f2a7e9b4d')
-DEBUG = os.environ.get('DJANGO_DEBUG', '1') == '1'
-ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
-if DEBUG:
-    ALLOWED_HOSTS += ["localhost", "127.0.0.1", "<username>.pythonanywhere.com"]
+# ---- Core ----
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY') or os.environ.get('SECRET_KEY') or 'dev-only-insecure-key-change-me'
+DEBUG = os.environ.get('DJANGO_DEBUG', 'False').lower() in ('1', 'true')
+
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'thangapappa.pythonanywhere.com']
+ALLOWED_HOSTS += [h for h in os.environ.get('DJANGO_ALLOWED_HOSTS', '').split(',') if h]
+
+CSRF_TRUSTED_ORIGINS = ['https://thangapappa.pythonanywhere.com']
+CSRF_TRUSTED_ORIGINS += [o for o in os.environ.get('DJANGO_CSRF_TRUSTED_ORIGINS', '').split(',') if o]
+
 # Render sets this automatically to the service's *.onrender.com hostname.
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
-CSRF_TRUSTED_ORIGINS = [o for o in os.environ.get('DJANGO_CSRF_TRUSTED_ORIGINS', '').split(',') if o]
-if RENDER_EXTERNAL_HOSTNAME:
-    CSRF_TRUSTED_ORIGINS.append(f'https://<username>.pythonanywhere.com')
+    CSRF_TRUSTED_ORIGINS.append(f'https://{RENDER_EXTERNAL_HOSTNAME}')
 
+# ---- Apps ----
 CHEMVERSE_APPS = [
     'accounts', 'dashboard', 'chemistry_learning', 'periodic_table', 'compound_search', 'boiling_melting',
     'molecular_structure', 'reaction_builder', 'reaction_balancer', 'chemistry_games', 'chemistry_quiz',
     'molecular_weight', 'lab_simulator', 'chemistry_dictionary', 'community',
 ]
-STATIC_URL = "/static/"
-STATIC_ROOT = BASE_DIR / "staticfiles"
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -72,7 +74,8 @@ TEMPLATES = [{
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
-# Local: SQLite. Production: set DATABASE_URL (e.g. the PostgreSQL URL Render provides).
+# ---- Database ----
+# Local / PythonAnywhere: SQLite. Render: set DATABASE_URL (PostgreSQL).
 if os.environ.get('DATABASE_URL'):
     DATABASES = {'default': dj_database_url.config(conn_max_age=600, conn_health_checks=True)}
 else:
@@ -80,7 +83,7 @@ else:
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': BASE_DIR / 'database' / 'db.sqlite3',
-            'OPTIONS': {'timeout': 20},  # lets several users write at once without "database is locked"
+            'OPTIONS': {'timeout': 20},
         }
     }
 
@@ -97,6 +100,7 @@ TIME_ZONE = 'Asia/Kolkata'
 USE_I18N = True
 USE_TZ = True
 
+# ---- Static & media ----
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
@@ -125,22 +129,23 @@ if EMAIL_HOST_USER and EMAIL_HOST_PASSWORD:
     EMAIL_PORT = int(os.environ.get('EMAIL_PORT', '587'))
     EMAIL_USE_TLS = True
 else:
-    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'  # emails print in the runserver terminal
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER or 'CHEMVERSE <no-reply@chemverse.local>'
 EMAIL_VERIFICATION_MAX_AGE = 60 * 60 * 24 * 3  # 3 days
 PASSWORD_RESET_TIMEOUT = 60 * 60 * 24  # 1 day
 
+# ---- Security ----
 SESSION_COOKIE_HTTPONLY = True
 CSRF_COOKIE_SAMESITE = 'Lax'
 if not DEBUG:
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
-    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')  # Render terminates HTTPS at its proxy
+    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
     SECURE_SSL_REDIRECT = True
     SECURE_HSTS_SECONDS = 60 * 60 * 24 * 30
     SECURE_CONTENT_TYPE_NOSNIFF = True
 
-# Send errors to the console so they show up in the hosting platform's logs.
+# ---- Logging (errors show in the hosting platform's error log) ----
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
