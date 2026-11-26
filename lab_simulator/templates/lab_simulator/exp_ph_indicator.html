@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}{{ exp.title }}{% endblock %}
+{% block content %}
+<a class="small" href="{% url 'lab_simulator:index' %}">← Lab Simulator</a>
+<div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-3 mt-1">
+  <div><span class="eyebrow">{{ exp.category }}</span><h1 class="h2 mb-1">{{ exp.title }}</h1><p class="text-secondary mb-0">{{ exp.summary }}</p></div>
+</div>
+{% if exp.safety_note %}<div class="alert alert-warning glass py-2 small">{% icon 'alert' 14 %} {{ exp.safety_note }}</div>{% endif %}
+<div id="lab" data-exp="{{ exp.slug }}" data-record="{% url 'lab_simulator:record' exp.slug %}" data-auth="{{ user.is_authenticated|yesno:'1,0' }}">
+
+<div class="row g-4">
+  <div class="col-lg-5"><div class="glass p-4 h-100"><h2 class="h6">Pick a solution</h2>
+    <div class="d-grid gap-2" id="solList">
+      <button class="btn btn-cv-outline text-start sol" data-ph="1">Battery acid (dilute H₂SO₄) – about pH 1</button>
+      <button class="btn btn-cv-outline text-start sol" data-ph="2">Lemon juice – about pH 2</button>
+      <button class="btn btn-cv-outline text-start sol" data-ph="3">Vinegar – about pH 3</button>
+      <button class="btn btn-cv-outline text-start sol" data-ph="5">Black coffee – about pH 5</button>
+      <button class="btn btn-cv-outline text-start sol" data-ph="7">Pure water – pH 7</button>
+      <button class="btn btn-cv-outline text-start sol" data-ph="7.4">Blood – about pH 7.4</button>
+      <button class="btn btn-cv-outline text-start sol" data-ph="8.3">Baking soda solution – about pH 8.3</button>
+      <button class="btn btn-cv-outline text-start sol" data-ph="10">Soapy water – about pH 10</button>
+      <button class="btn btn-cv-outline text-start sol" data-ph="11">Household ammonia – about pH 11</button>
+      <button class="btn btn-cv-outline text-start sol" data-ph="13">Bleach – about pH 12–13</button>
+    </div>
+    <label class="form-label small mt-3">Or set any pH: <b id="phCustomV">7.0</b></label><input type="range" class="form-range" id="phCustom" min="0" max="14" step="0.1" value="7">
+    <p class="small text-secondary mb-0">Values for everyday solutions are typical approximations.</p></div></div>
+  <div class="col-lg-7"><div class="glass p-4 h-100">
+    <div class="row text-center g-3">
+      <div class="col-4"><div class="tube"><div class="tube-liquid" id="tubeUni"></div></div><div class="small mt-2">Universal indicator</div><b id="uniName" class="small">Green</b></div>
+      <div class="col-4"><div class="strip" id="stripLitmus"></div><div class="small mt-2">Litmus paper</div><b id="litName" class="small">Purple</b></div>
+      <div class="col-4"><div class="tube"><div class="tube-liquid" id="tubePhth"></div></div><div class="small mt-2">Phenolphthalein</div><b id="phthName" class="small">Colourless</b></div>
+    </div>
+    <div class="ph-scale mt-4" id="phScale"><span id="phMarker"></span></div>
+    <div class="d-flex justify-content-between small text-secondary"><span>0 acidic</span><span>7 neutral</span><span>14 basic</span></div>
+    <p class="mt-3 mb-0" id="phText">pH 7 is neutral.</p>
+  </div></div>
+</div>
+</div>
+<div class="glass p-3 mt-3 d-flex flex-wrap gap-2 align-items-center">
+  <span class="small">Result: <b id="labResult">–</b></span>
+  <button class="btn btn-sm btn-cv ms-auto" id="recordBtn">{% icon 'bookmark' 14 %} Record in my lab notebook</button>
+</div>
+{% if logs %}<div class="glass p-3 mt-3"><h2 class="h6">Your previous results</h2>{% for l in logs %}<div class="small">{{ l.created_at|date:"d M, H:i" }} – {{ l.result }}</div>{% endfor %}</div>{% endif %}
+{% endblock %}
+{% block extra_js %}{% load static %}<script src="{% static 'js/lab.js' %}"></script>{% endblock %}

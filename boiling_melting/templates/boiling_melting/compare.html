@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title %}Compare compounds{% endblock %}
+{% block content %}
+{% include 'includes/page_head.html' with title='Compare melting & boiling points' ic='chart' %}
+<form class="glass p-3 mb-4" method="get">
+  <label class="form-label small">Choose 2–8 compounds (Ctrl/Cmd + click)</label>
+  <div class="row g-2"><div class="col-md-10"><select class="form-select" name="c" multiple size="5">
+    {% for c in all_compounds %}<option value="{{ c.pk }}" {% if c.pk in ids %}selected{% endif %}>{{ c.name }} ({{ c.formula }})</option>{% endfor %}</select></div>
+  <div class="col-md-2 d-grid"><button class="btn btn-cv">Update chart</button></div></div>
+</form>
+{% if compounds %}
+<div class="glass p-4 mb-4"><div class="chart-box tall"><canvas id="cmpChart"></canvas></div>
+  <p class="small text-secondary mt-2 mb-0">Missing bars mean the value is not available (the substance decomposes or sublimes, or no reliable value exists).</p></div>
+<div class="glass p-0 overflow-hidden mb-4"><table class="table table-cv mb-0"><thead><tr><th>Compound</th><th class="text-end">Melting °C</th><th class="text-end">Boiling °C</th><th>Notes</th></tr></thead><tbody>
+  {% for c in compounds %}<tr><td><a href="{% url 'compound_search:detail' c.pk %}">{{ c.name }}</a></td><td class="text-end">{{ c.melting_point|default_if_none:'n/a' }}</td><td class="text-end">{{ c.boiling_point|default_if_none:'n/a' }}</td><td class="small text-secondary">{{ c.mp_note }} {{ c.bp_note }}</td></tr>{% endfor %}
+</tbody></table></div>
+{% if user.is_authenticated and compounds|length > 1 %}
+<form method="post" action="{% url 'boiling_melting:save' %}" class="glass p-3 d-flex gap-2 align-items-center">{% csrf_token %}
+  {% for c in compounds %}<input type="hidden" name="c" value="{{ c.pk }}">{% endfor %}
+  <input class="form-control" name="name" placeholder="Name this comparison" maxlength="80" style="max-width:320px"><button class="btn btn-cv">{% icon 'bookmark' %} Save</button></form>{% endif %}
+{% else %}<p class="text-secondary">Select compounds above to draw the chart.</p>{% endif %}
+{{ chart|json_script:"cmp-data" }}
+{% endblock %}
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+(() => {const el=document.getElementById('cmpChart');if(!el)return;CV.chartDefaults();
+const d=JSON.parse(JSON.parse(document.getElementById('cmp-data').textContent));
+new Chart(el,{type:'bar',data:{labels:d.labels,datasets:[{label:'Melting point (°C)',data:d.mp,backgroundColor:'#22d3ee',borderRadius:6},{label:'Boiling point (°C)',data:d.bp,backgroundColor:'#a78bfa',borderRadius:6}]},
+options:{maintainAspectRatio:false,scales:{y:{title:{display:true,text:'°C'}}}}});})();
+</script>{% endblock %}

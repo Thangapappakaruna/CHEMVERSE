@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %}{{ r.title }}{% endblock %}
+{% block content %}
+<nav aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="{% url 'reaction_builder:list' %}">Reactions</a></li><li class="breadcrumb-item active">{{ r.title }}</li></ol></nav>
+<div class="glass p-4 mb-4">
+  <div class="d-flex flex-wrap justify-content-between gap-2"><div><span class="eyebrow">{{ r.get_reaction_type_display }}</span>{% if r.is_sample %} <span class="badge text-bg-cv">Sample reaction</span>{% endif %}
+    <h1 class="h3 mt-1">{{ r.title }}</h1></div>
+    <div class="d-flex flex-wrap gap-2 align-items-start">
+      {% if own %}<a class="btn btn-sm btn-cv-outline" href="{% url 'reaction_builder:edit' r.pk %}">{% icon 'edit' 14 %} Edit</a>
+      <form method="post" action="{% url 'reaction_builder:delete' r.pk %}" data-confirm="Delete this reaction?">{% csrf_token %}<button class="btn btn-sm btn-outline-danger">{% icon 'trash' 14 %} Delete</button></form>
+      {% elif user.is_authenticated %}<a class="btn btn-sm btn-cv-outline" href="{% url 'reaction_builder:create' %}?from={{ r.pk }}">Make my own version</a>{% endif %}
+      {% if user.is_authenticated and r.is_public %}<a class="btn btn-sm btn-cv-outline" href="{% url 'community:create' %}?reaction={{ r.pk }}">{% icon 'users' 14 %} Share in community</a>{% endif %}
+    </div></div>
+  <div class="eq huge my-3">{{ r.equation|chem }}</div>
+  {% if r.conditions %}<p class="mb-1"><b>Conditions:</b> {{ r.conditions }}</p>{% endif %}
+  <p class="small text-secondary mb-0">{% if r.user %}Created by <a href="{% url 'accounts:profile' r.user.username %}">{{ r.user.username }}</a>{% else %}CHEMVERSE sample{% endif %} · {{ r.created_at|date:"d M Y" }}</p>
+</div>
+{% if info.error %}<div class="alert alert-danger">{{ info.error }}</div>{% else %}
+<div class="row g-4">
+  <div class="col-lg-6"><div class="glass p-4 h-100">
+    <h2 class="h5">{% icon 'scale' %} Balance check {% if info.is_balanced %}<span class="badge text-bg-success">Balanced</span>{% else %}<span class="badge text-bg-warning">Not balanced</span>{% endif %}</h2>
+    <table class="table table-cv table-sm"><thead><tr><th>Element</th><th class="text-end">Reactant atoms</th><th class="text-end">Product atoms</th></tr></thead><tbody>
+      {% for row in info.table %}<tr class="{% if row.left != row.right %}row-bad{% endif %}"><td>{{ row.element }}</td><td class="text-end">{{ row.left }}</td><td class="text-end">{{ row.right }}</td></tr>{% endfor %}</tbody></table>
+    {% if info.suggestion %}<div class="alert alert-info"><b>Balancing help:</b> <span class="eq">{{ info.suggestion|chem }}</span>
+      <div class="mt-2 d-flex gap-2">{% if own %}<form method="post" action="{% url 'reaction_builder:apply_balance' r.pk %}">{% csrf_token %}<button class="btn btn-sm btn-cv">Apply these coefficients</button></form>{% endif %}
+        <a class="btn btn-sm btn-cv-outline" href="{% url 'reaction_balancer:index' %}?equation={{ r.equation|urlencode }}">See step-by-step</a></div></div>
+    {% elif info.suggestion_error %}<div class="alert alert-warning">{{ info.suggestion_error }}</div>{% endif %}
+    <h3 class="h6 mt-3">Conservation of mass</h3>
+    <table class="table table-cv table-sm mb-1"><thead><tr><th>Side</th><th>Substance</th><th class="text-end">M (g/mol)</th><th class="text-end">× coef</th></tr></thead><tbody>
+      {% for m in info.masses %}<tr><td class="small">{{ m.side }}</td><td class="mono">{{ m.formula|chem }}</td><td class="text-end">{{ m.molar_mass }}</td><td class="text-end">{{ m.total }}</td></tr>{% endfor %}</tbody></table>
+    <p class="small mb-0">Reactants: <b>{{ info.mass_left }} g</b> · Products: <b>{{ info.mass_right }} g</b> {% if info.is_balanced %}<span class="text-success">– mass is conserved ✓</span>{% endif %}</p>
+  </div></div>
+  <div class="col-lg-6"><div class="glass p-4 h-100 prose">
+    <h2 class="h5">{% icon 'book' %} Explanation</h2>
+    {% if r.explanation %}<p>{{ r.explanation|linebreaksbr }}</p>{% endif %}
+    <p><b>{{ r.get_reaction_type_display }}.</b> {{ type_text }}</p>
+    <p class="small text-secondary">Pattern check: CHEMVERSE detects “{{ info.detected_type }}” – {{ info.detected_reason }}</p>
+    <p class="small text-secondary mb-0">Reactions here are theoretical examples for learning. Never attempt them without a qualified supervisor and proper safety equipment.</p>
+  </div></div>
+</div>{% endif %}
+{% endblock %}

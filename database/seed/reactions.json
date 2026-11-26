@@ -1,0 +1,100 @@
+[
+ {
+  "title": "Formation of water",
+  "equation": "2H2 + O2 -> 2H2O",
+  "reaction_type": "synthesis",
+  "conditions": "Spark or flame",
+  "explanation": "Hydrogen and oxygen combine to form water. Very exothermic – this is a theoretical example."
+ },
+ {
+  "title": "Combustion of methane",
+  "equation": "CH4 + 2O2 -> CO2 + 2H2O",
+  "reaction_type": "combustion",
+  "conditions": "Ignition",
+  "explanation": "Natural gas burns in plenty of oxygen to give carbon dioxide and water."
+ },
+ {
+  "title": "Combustion of propane",
+  "equation": "C3H8 + 5O2 -> 3CO2 + 4H2O",
+  "reaction_type": "combustion",
+  "conditions": "Ignition",
+  "explanation": "LPG burning in a gas stove."
+ },
+ {
+  "title": "Acid–base neutralisation",
+  "equation": "HCl + NaOH -> NaCl + H2O",
+  "reaction_type": "neutralisation",
+  "conditions": "Room temperature, aqueous",
+  "explanation": "H⁺ from the acid and OH⁻ from the base form water; the spectator ions make the salt."
+ },
+ {
+  "title": "Photosynthesis (overall)",
+  "equation": "6CO2 + 6H2O -> C6H12O6 + 6O2",
+  "reaction_type": "other",
+  "conditions": "Sunlight, chlorophyll",
+  "explanation": "Plants store light energy as glucose. This overall equation summarises many steps."
+ },
+ {
+  "title": "Aerobic respiration (overall)",
+  "equation": "C6H12O6 + 6O2 -> 6CO2 + 6H2O",
+  "reaction_type": "redox",
+  "conditions": "Enzymes in cells",
+  "explanation": "Cells release energy from glucose – the reverse of photosynthesis."
+ },
+ {
+  "title": "Thermal decomposition of limestone",
+  "equation": "CaCO3 -> CaO + CO2",
+  "reaction_type": "decomposition",
+  "conditions": "Strong heating (~825 °C+)",
+  "explanation": "Used to make quicklime in a lime kiln."
+ },
+ {
+  "title": "Rusting of iron (simplified)",
+  "equation": "4Fe + 3O2 -> 2Fe2O3",
+  "reaction_type": "redox",
+  "conditions": "Water and oxygen present",
+  "explanation": "Iron is oxidised. Real rust is hydrated iron(III) oxide."
+ },
+ {
+  "title": "Zinc with hydrochloric acid",
+  "equation": "Zn + 2HCl -> ZnCl2 + H2",
+  "reaction_type": "single",
+  "conditions": "Dilute acid",
+  "explanation": "A reactive metal displaces hydrogen from an acid."
+ },
+ {
+  "title": "Iron displaces copper",
+  "equation": "Fe + CuSO4 -> FeSO4 + Cu",
+  "reaction_type": "single",
+  "conditions": "Aqueous",
+  "explanation": "Iron is more reactive than copper, so it displaces it – a copper coating appears."
+ },
+ {
+  "title": "Silver chloride precipitate",
+  "equation": "AgNO3 + NaCl -> AgCl + NaNO3",
+  "reaction_type": "double",
+  "conditions": "Aqueous",
+  "explanation": "Mixing the solutions forms a white precipitate of AgCl – a test for chloride ions."
+ },
+ {
+  "title": "Haber process",
+  "equation": "N2 + 3H2 -> 2NH3",
+  "reaction_type": "synthesis",
+  "conditions": "~450 °C, ~200 atm, iron catalyst",
+  "explanation": "Industrial ammonia synthesis; a reversible reaction."
+ },
+ {
+  "title": "Electrolysis of water",
+  "equation": "2H2O -> 2H2 + O2",
+  "reaction_type": "decomposition",
+  "conditions": "Electric current, dilute electrolyte",
+  "explanation": "Two volumes of hydrogen form at the cathode for every one volume of oxygen at the anode."
+ },
+ {
+  "title": "Baking soda and vinegar",
+  "equation": "NaHCO3 + CH3COOH -> CH3COONa + H2O + CO2",
+  "reaction_type": "neutralisation",
+  "conditions": "Room temperature",
+  "explanation": "The fizzing is carbon dioxide gas."
+ }
+]

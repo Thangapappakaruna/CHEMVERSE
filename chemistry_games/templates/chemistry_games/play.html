@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}{{ game.title }}{% endblock %}
+{% block content %}
+<div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-3">
+  <div><a class="small" href="{% url 'chemistry_games:index' %}">← All games</a><h1 class="h2 mb-1 mt-1"><span class="head-ic">{% icon game.icon 26 %}</span>{{ game.title }}</h1><p class="text-secondary mb-0">{{ game.description }}</p></div>
+  <div class="score-pill glass">Score <b id="gScore">0</b></div>
+</div>
+<div class="row g-4">
+  <div class="col-lg-9"><div class="glass game-stage p-4" id="gameStage" data-game="{{ game.slug }}" data-auth="{{ user.is_authenticated|yesno:'1,0' }}"
+       data-submit="{% url 'chemistry_games:submit' %}" data-elements="{% url 'periodic_table:api_elements' %}"
+       data-compounds="{% url 'compound_search:api_search' %}" data-questions="{% url 'chemistry_quiz:api_questions' %}"
+       data-login="{% url 'accounts:login' %}?next={{ request.path }}">
+    <p class="text-center text-secondary py-5">Loading game…</p></div></div>
+  <div class="col-lg-3"><div class="glass p-3"><h2 class="h6">{% icon 'trophy' %} Top players</h2>
+    {% for t in top %}<div class="d-flex justify-content-between small py-1"><span>{{ forloop.counter }}. {{ t.user__username }}</span><b>{{ t.best }}</b></div>
+    {% empty %}<p class="small text-secondary mb-0">No scores yet – be the first!</p>{% endfor %}</div></div>
+</div>
+{% endblock %}
+{% block extra_js %}{% load static %}<script src="{% static 'js/games.js' %}"></script>{% endblock %}

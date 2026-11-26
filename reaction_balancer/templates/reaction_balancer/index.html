@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Equation Balancer{% endblock %}
+{% block content %}
+{% include 'includes/page_head.html' with title='Equation Balancer' ic='scale' eyebrow='Step by step' sub='Enter an unbalanced equation. Use -> or = between the sides and + between substances.' %}
+<form method="post" class="glass p-3 mb-3 d-flex flex-column flex-md-row gap-2">{% csrf_token %}
+  <input class="form-control form-control-lg mono" name="equation" value="{{ equation }}" placeholder="Fe + O2 -> Fe2O3" required aria-label="Equation">
+  <button class="btn btn-cv btn-lg px-4">Balance</button>
+</form>
+<div class="mb-4"><span class="small text-secondary me-2">Try:</span>{% for ex in examples %}<a class="chip" href="?equation={{ ex|urlencode }}">{{ ex|chem }}</a>{% endfor %}</div>
+{% if error %}<div class="alert alert-danger glass">{{ error }}</div>{% endif %}
+{% if result %}
+<div class="glass p-4 mb-4 result-glow text-center"><div class="small text-secondary">Balanced equation</div><div class="eq huge">{{ result.balanced|chem }}</div></div>
+<div class="glass p-4 mb-4">
+  <h2 class="h5 mb-3">How it was balanced</h2>
+  <ol class="steps">
+    {% for s in result.steps %}
+    <li><h3 class="h6">{{ s.title }}</h3>
+      {% if s.text %}<p class="mono mb-0">{{ s.text|chem }}</p>{% endif %}
+      {% if s.lines %}<div class="mono small">{% for ln in s.lines %}<div>{{ ln|chem }}</div>{% endfor %}</div>{% endif %}
+      {% if s.rows %}<table class="table table-cv table-sm mb-0"><thead><tr><th>Substance</th><th>Side</th><th>Atoms</th></tr></thead><tbody>{% for r in s.rows %}<tr><td class="mono">{{ r.species|chem }}</td><td>{{ r.side }}</td><td class="small">{{ r.counts }}</td></tr>{% endfor %}</tbody></table>{% endif %}
+      {% if s.table %}<table class="table table-cv table-sm mb-0"><thead><tr><th>Element</th><th class="text-end">Left</th><th class="text-end">Right</th><th></th></tr></thead><tbody>{% for r in s.table %}<tr><td>{{ r.element }}</td><td class="text-end">{{ r.left }}</td><td class="text-end">{{ r.right }}</td><td class="text-success">✓</td></tr>{% endfor %}</tbody></table>{% endif %}
+    </li>
+    {% endfor %}
+  </ol>
+  {% if user.is_authenticated %}<a class="btn btn-cv-outline btn-sm" href="{% url 'reaction_builder:create' %}">Save it as a reaction →</a>{% endif %}
+</div>
+{% endif %}
+{% if history %}<div class="glass p-4"><h2 class="h6">{% icon 'history' %} Your recent balances</h2>{% for h in history %}<div class="eq small py-1">{{ h.balanced|chem }}</div>{% endfor %}</div>{% endif %}
+{% endblock %}

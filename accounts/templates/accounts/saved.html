@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Saved items{% endblock %}
+{% block content %}
+{% include 'includes/page_head.html' with title='Saved items' ic='bookmark' sub='Your favourite compounds, structures and reactions.' %}
+<div class="row g-4">
+  <div class="col-lg-4"><div class="glass p-4 h-100"><h2 class="h5">{% icon 'star' %} Favourite compounds</h2>
+    {% for f in favorites %}<div class="d-flex justify-content-between align-items-center border-bottom border-secondary-subtle py-2">
+      <a href="{% url 'compound_search:detail' f.compound.pk %}">{{ f.compound.name }}</a><span class="mono">{{ f.compound.formula|chem }}</span></div>
+    {% empty %}<p class="text-secondary">Use the ☆ button on any compound to save it.</p>{% endfor %}</div></div>
+  <div class="col-lg-4"><div class="glass p-4 h-100"><h2 class="h5">{% icon 'hexagon' %} Structures</h2>
+    {% for s in structures %}<div class="d-flex justify-content-between align-items-center border-bottom border-secondary-subtle py-2">
+      <a href="{% url 'molecular_structure:editor' %}?id={{ s.id }}">{{ s.name }}</a><span class="mono">{{ s.formula|chem }}</span></div>
+    {% empty %}<p class="text-secondary">No saved structures. <a href="{% url 'molecular_structure:editor' %}">Draw one</a>.</p>{% endfor %}</div></div>
+  <div class="col-lg-4"><div class="glass p-4 h-100"><h2 class="h5">{% icon 'zap' %} Reactions</h2>
+    {% for r in reactions %}<div class="border-bottom border-secondary-subtle py-2"><a href="{% url 'reaction_builder:detail' r.pk %}">{{ r.title }}</a><div class="mono small">{{ r.equation|chem }}</div></div>
+    {% empty %}<p class="text-secondary">No reactions yet. <a href="{% url 'reaction_builder:create' %}">Build one</a>.</p>{% endfor %}</div></div>
+</div>
+{% endblock %}

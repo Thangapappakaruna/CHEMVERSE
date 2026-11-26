@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Structure gallery{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-end mb-4"><div><div class="eyebrow">Structure Lab</div><h1 class="h2 mb-0">Gallery</h1></div>
+  <a class="btn btn-cv" href="{% url 'molecular_structure:editor' %}">{% icon 'plus' %} New structure</a></div>
+{% if user.is_authenticated %}<h2 class="h5">My structures</h2>
+<div class="row g-3 mb-5">{% for s in mine %}<div class="col-sm-6 col-lg-4 col-xl-3"><div class="glass p-3 h-100">
+  <canvas class="mini-mol" width="260" height="150" data-mol='{{ s.data|safe_json }}'></canvas>
+  <h3 class="h6 mt-2 mb-0">{{ s.name }}</h3><div class="mono small">{{ s.formula|chem }} · {{ s.molar_mass|default_if_none:'–' }} g/mol</div>
+  <div class="small text-secondary">{% if s.is_public %}Public{% else %}Private{% endif %} · {{ s.updated_at|date:"d M Y" }}</div>
+  <div class="d-flex gap-2 mt-2"><a class="btn btn-sm btn-cv-outline" href="{% url 'molecular_structure:editor' %}?id={{ s.id }}">Open</a>
+    <form method="post" action="{% url 'molecular_structure:delete' s.pk %}" data-confirm="Delete this structure?">{% csrf_token %}<button class="btn btn-sm btn-outline-danger">{% icon 'trash' 14 %}</button></form></div>
+</div></div>{% empty %}<p class="text-secondary">You have not saved any structures yet.</p>{% endfor %}</div>{% endif %}
+<h2 class="h5">Community structures</h2>
+<div class="row g-3">{% for s in public %}<div class="col-sm-6 col-lg-4 col-xl-3"><a class="glass p-3 h-100 d-block" href="{% url 'molecular_structure:editor' %}?id={{ s.id }}">
+  <canvas class="mini-mol" width="260" height="150" data-mol='{{ s.data|safe_json }}'></canvas>
+  <h3 class="h6 mt-2 mb-0">{{ s.name }}</h3><div class="mono small">{{ s.formula|chem }}</div><div class="small text-secondary">by {{ s.user.username }}</div></a></div>
+{% empty %}<p class="text-secondary">No public structures yet.</p>{% endfor %}</div>
+{% endblock %}
+{% block extra_js %}{% load static %}<script src="{% static 'js/structure.js' %}"></script>{% endblock %}

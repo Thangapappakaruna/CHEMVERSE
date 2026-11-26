@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}Chemistry Quiz{% endblock %}
+{% block content %}
+{% include 'includes/page_head.html' with title='Chemistry Quiz' ic='help' eyebrow='Multiple choice' sub='Pick a topic and difficulty. 5 XP for every correct answer.' %}
+<div class="row g-4">
+  <div class="col-lg-5"><form class="glass p-4" method="get" action="{% url 'chemistry_quiz:play' %}">
+    <h2 class="h5 mb-3">Start a quiz</h2>
+    <label class="form-label" for="qCat">Topic</label>
+    <select class="form-select mb-3" name="category" id="qCat"><option value="">Mixed – all topics</option>{% for c in categories %}<option value="{{ c.category }}">{{ c.category }} ({{ c.n }})</option>{% endfor %}</select>
+    <label class="form-label" for="qDiff">Difficulty</label>
+    <select class="form-select mb-3" name="difficulty" id="qDiff">{% for v, l in difficulties %}<option value="{{ v }}">{{ l }}{% if v %} ({{ diff_counts|get_item:v|default:0 }}){% endif %}</option>{% endfor %}</select>
+    <label class="form-label" for="qN">Questions</label>
+    <select class="form-select mb-4" name="n" id="qN"><option>5</option><option selected>10</option><option>15</option><option>20</option></select>
+    <button class="btn btn-cv w-100">Start quiz</button>
+    {% if not user.is_authenticated %}<p class="small text-secondary mt-2 mb-0">Playing as a guest – your score is kept for this visit. <a href="{% url 'accounts:register' %}">Create an account</a> to save it and join the leaderboard.</p>{% endif %}
+    <p class="small text-secondary mt-3 mb-0">Prefer speed? Try the <a href="{% url 'chemistry_games:play' 'timed-quiz' %}">Timed Chemistry Quiz</a> game.</p>
+  </form></div>
+  <div class="col-lg-7">
+    <div class="row g-3 mb-3">{% for c in categories %}<div class="col-6 col-md-4"><a class="glass tool-card compact h-100" href="{% url 'chemistry_quiz:play' %}?category={{ c.category|urlencode }}"><b class="small">{{ c.category }}</b><span class="small text-secondary d-block">{{ c.n }} questions</span></a></div>{% endfor %}</div>
+    {% if recent %}<div class="glass p-4"><h2 class="h6">Your recent results</h2><table class="table table-cv table-sm mb-0"><thead><tr><th>Topic</th><th>Level</th><th>Score</th><th>When</th></tr></thead><tbody>
+      {% for r in recent %}<tr><td>{{ r.category|default:'Mixed' }}</td><td>{{ r.difficulty|default:'Any'|capfirst }}</td><td>{{ r.score }}/{{ r.total }} ({{ r.percent }}%)</td><td class="small">{{ r.created_at|timesince }} ago</td></tr>{% endfor %}</tbody></table></div>{% endif %}
+    <a class="btn btn-cv-outline mt-3" href="{% url 'chemistry_quiz:leaderboard' %}">{% icon 'trophy' %} Leaderboard</a>
+  </div>
+</div>
+{% endblock %}

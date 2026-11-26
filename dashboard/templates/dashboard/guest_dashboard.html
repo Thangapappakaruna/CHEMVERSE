@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% block title %}Guest dashboard{% endblock %}
+{% block content %}
+<div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+  <div>
+    <div class="eyebrow">Guest dashboard</div>
+    <h1 class="h2 mb-1">Welcome, explorer</h1>
+    <p class="text-secondary mb-0">Use every tool freely. Your progress below is kept for this browser visit.</p>
+  </div>
+  <div class="d-flex gap-2">
+    <a class="btn btn-cv" href="{% url 'accounts:register' %}">{% icon 'bookmark' %} Create account to save progress</a>
+    <a class="btn btn-cv-outline" href="{% url 'accounts:login' %}?next={% url 'dashboard:dashboard' %}">Sign in</a>
+  </div>
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-6 col-xl-3"><div class="glass stat-card"><span class="stat-ic">{% icon 'book' %}</span><div class="stat-n">{{ lessons_done }}<small>/{{ lessons_total }}</small></div><div class="stat-l">Lessons completed</div></div></div>
+  <div class="col-6 col-xl-3"><div class="glass stat-card"><span class="stat-ic">{% icon 'help' %}</span><div class="stat-n">{{ quiz_avg }}<small>%</small></div><div class="stat-l">Avg quiz score ({{ data.quiz|length }})</div></div></div>
+  <div class="col-6 col-xl-3"><div class="glass stat-card"><span class="stat-ic">{% icon 'gamepad' %}</span><div class="stat-n">{{ game_points }}</div><div class="stat-l">Game points</div></div></div>
+  <div class="col-6 col-xl-3"><div class="glass stat-card"><span class="stat-ic">{% icon 'beaker' %}</span><div class="stat-n">{{ data.experiments|length }}</div><div class="stat-l">Experiments recorded</div></div></div>
+</div>
+
+<div class="row g-4 mb-4">
+  <div class="col-lg-7"><div class="glass p-4 h-100">
+    <h2 class="h5 mb-3">{% icon 'chart' %} Quiz scores this visit</h2>
+    {% if data.quiz %}<div class="chart-box"><canvas id="quizChart"></canvas></div>
+    {% else %}<p class="text-secondary">No quizzes yet. <a href="{% url 'chemistry_quiz:index' %}">Take a quiz</a> – no sign-in needed.</p>{% endif %}
+  </div></div>
+  <div class="col-lg-5"><div class="glass p-4 h-100">
+    <h2 class="h5 mb-3">{% icon 'gamepad' %} Game points by game</h2>
+    {% if game_points %}<div class="chart-box"><canvas id="gameChart"></canvas></div>
+    {% else %}<p class="text-secondary">No games yet. <a href="{% url 'chemistry_games:index' %}">Play one</a>.</p>{% endif %}
+  </div></div>
+</div>
+
+<div class="row g-4 mb-4">
+  <div class="col-lg-4"><div class="glass p-4 h-100">
+    <h2 class="h5 mb-3">{% icon 'book' %} Learning progress</h2>
+    <div class="d-flex justify-content-between small mb-1"><span>Lessons</span><span>{{ lesson_pct }}%</span></div>
+    <div class="progress mb-3" style="height:10px"><div class="progress-bar bg-cv" style="width: {{ lesson_pct }}%"></div></div>
+    <a href="{% url 'chemistry_learning:list' %}">Continue learning →</a>
+  </div></div>
+  <div class="col-lg-4"><div class="glass p-4 h-100">
+    <h2 class="h5 mb-3">{% icon 'clock' %} Recently visited</h2>
+    {% for a in recent_tools %}<a class="list-link" href="{{ a.url }}">{{ a.label }}</a>
+    {% empty %}<p class="text-secondary small">Tools you open appear here.</p>{% endfor %}
+  </div></div>
+  <div class="col-lg-4"><div class="glass p-4 h-100">
+    <h2 class="h5 mb-3">{% icon 'history' %} This visit</h2>
+    {% for a in recent_activity %}<div class="small py-1 border-bottom border-secondary-subtle">{{ a.label }}</div>
+    {% empty %}<p class="text-secondary small">Your quizzes, games, lessons and experiments will show here.</p>{% endfor %}
+  </div></div>
+</div>
+
+<div class="glass p-4 mb-4 cta">
+  <h2 class="h5">What a free account adds</h2>
+  <div class="row g-3 small">
+    <div class="col-md-3">{% icon 'bookmark' %} Save molecules, reactions and favourite compounds</div>
+    <div class="col-md-3">{% icon 'trophy' %} Permanent scores, XP, levels and achievements</div>
+    <div class="col-md-3">{% icon 'users' %} Post and reply in the community</div>
+    <div class="col-md-3">{% icon 'history' %} Full learning history across devices</div>
+  </div>
+</div>
+
+<h2 class="h5 mb-3">All tools – free to use</h2>
+<div class="row g-3">{% for ic, title, text, url in tools %}<div class="col-6 col-md-4 col-xl-2"><a class="glass tool-card compact h-100" href="{% url url %}"><span class="tool-ic">{% icon ic 20 %}</span><span class="small fw-semibold mt-2 d-block">{{ title }}</span></a></div>{% endfor %}</div>
+{{ quiz_chart|json_script:"quiz-data" }}
+{{ game_chart|json_script:"game-data" }}
+{% endblock %}
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+(() => {
+  const q = JSON.parse(JSON.parse(document.getElementById('quiz-data').textContent));
+  const g = JSON.parse(JSON.parse(document.getElementById('game-data').textContent));
+  CV.chartDefaults();
+  const qc = document.getElementById('quizChart');
+  if (qc) new Chart(qc, {type: 'line', data: {labels: q.labels, datasets: [{label: 'Score %', data: q.data, borderColor: '#22d3ee', backgroundColor: 'rgba(34,211,238,.15)', fill: true, tension: .35, pointRadius: 4}]},
+    options: {maintainAspectRatio: false, scales: {y: {min: 0, max: 100}}, plugins: {legend: {display: false}}}});
+  const gc = document.getElementById('gameChart');
+  if (gc) new Chart(gc, {type: 'bar', data: {labels: g.labels, datasets: [{data: g.data, backgroundColor: ['#22d3ee', '#a78bfa', '#34d399', '#f472b6', '#fbbf24', '#60a5fa', '#c084fc'], borderRadius: 6}]},
+    options: {maintainAspectRatio: false, indexAxis: 'y', plugins: {legend: {display: false}}}});
+})();
+</script>
+{% endblock %}

@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}{{ lesson.title }}{% endblock %}
+{% block content %}
+<nav aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="{% url 'chemistry_learning:list' %}">Lessons</a></li><li class="breadcrumb-item active">{{ lesson.title }}</li></ol></nav>
+<article class="glass p-4 p-lg-5 prose mx-auto" style="max-width:860px">
+  <div class="eyebrow">{{ lesson.category }} · {{ lesson.level }} · {{ lesson.reading_minutes }} min</div>
+  <h1 class="h2">{{ lesson.title }}</h1>
+  <p class="lead text-secondary">{{ lesson.summary }}</p>
+  <div class="lesson-body">{{ lesson.content|safe }}</div>
+  <div class="d-flex flex-wrap gap-2 align-items-center mt-4 pt-3 border-top border-secondary-subtle">
+    {% if done %}<span class="badge text-bg-success p-2">{% icon 'check' 14 %} Completed</span>
+    {% else %}<form method="post" action="{% url 'chemistry_learning:complete' lesson.slug %}">{% csrf_token %}<button class="btn btn-cv">{% icon 'check' %} Mark complete{% if user.is_authenticated %} (+25 XP){% endif %}</button></form>{% endif %}
+    {% if not user.is_authenticated %}<span class="small text-secondary">Guest mode – progress is kept for this visit. <a href="{% url 'accounts:register' %}">Sign up</a> to keep it.</span>{% endif %}
+  </div>
+</article>
+<div class="d-flex justify-content-between mt-4 mx-auto" style="max-width:860px">
+  {% if prev %}<a class="btn btn-cv-outline" href="{% url 'chemistry_learning:detail' prev.slug %}">← {{ prev.title }}</a>{% else %}<span></span>{% endif %}
+  {% if next %}<a class="btn btn-cv-outline" href="{% url 'chemistry_learning:detail' next.slug %}">{{ next.title }} →</a>{% endif %}
+</div>
+{% endblock %}

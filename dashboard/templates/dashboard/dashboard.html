@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-4">
+  <div>
+    <div class="eyebrow">Dashboard</div>
+    <h1 class="h2 mb-1">Hello, {{ prof.display_name }}</h1>
+    <div class="d-flex align-items-center gap-3"><span class="badge text-bg-cv">Level {{ prof.level }}</span><span class="small text-secondary">{{ prof.xp }} XP</span>
+      <div class="progress" style="width:200px;height:8px"><div class="progress-bar bg-cv" style="width: {{ prof.level_progress }}%"></div></div></div>
+  </div>
+  <a class="btn btn-cv" href="{% url 'chemistry_learning:list' %}">{% icon 'book' %} Continue learning</a>
+</div>
+
+<div class="row g-3 mb-4">
+  <div class="col-6 col-xl"><div class="glass stat-card"><span class="stat-ic">{% icon 'book' %}</span><div class="stat-n">{{ lessons_done }}<small>/{{ lessons_total }}</small></div><div class="stat-l">Lessons completed</div></div></div>
+  <div class="col-6 col-xl"><div class="glass stat-card"><span class="stat-ic">{% icon 'help' %}</span><div class="stat-n">{{ quiz_avg }}<small>%</small></div><div class="stat-l">Avg quiz score ({{ quiz_count }})</div></div></div>
+  <div class="col-6 col-xl"><div class="glass stat-card"><span class="stat-ic">{% icon 'gamepad' %}</span><div class="stat-n">{{ game_points }}</div><div class="stat-l">Game points</div></div></div>
+  <div class="col-6 col-xl"><div class="glass stat-card"><span class="stat-ic">{% icon 'hexagon' %}</span><div class="stat-n">{{ structure_count }}</div><div class="stat-l">Saved structures</div></div></div>
+  <div class="col-12 col-xl"><div class="glass stat-card"><span class="stat-ic">{% icon 'trophy' %}</span><div class="stat-n">{{ badges_earned }}<small>/{{ badges|length }}</small></div><div class="stat-l">Achievements</div></div></div>
+</div>
+
+<div class="row g-4 mb-4">
+  <div class="col-lg-7"><div class="glass p-4 h-100">
+    <h2 class="h5 mb-3">{% icon 'chart' %} Quiz scores (last 10)</h2>
+    {% if quiz_count %}<div class="chart-box"><canvas id="quizChart"></canvas></div>
+    {% else %}<p class="text-secondary">No quizzes yet. <a href="{% url 'chemistry_quiz:index' %}">Take your first quiz</a>.</p>{% endif %}
+  </div></div>
+  <div class="col-lg-5"><div class="glass p-4 h-100">
+    <h2 class="h5 mb-3">{% icon 'gamepad' %} Game points by game</h2>
+    {% if game_points %}<div class="chart-box"><canvas id="gameChart"></canvas></div>
+    {% else %}<p class="text-secondary">No games yet. <a href="{% url 'chemistry_games:index' %}">Play one</a>.</p>{% endif %}
+  </div></div>
+</div>
+
+<div class="row g-4 mb-4">
+  <div class="col-lg-5"><div class="glass p-4 h-100">
+    <h2 class="h5 mb-3">{% icon 'book' %} Learning progress</h2>
+    <div class="d-flex justify-content-between small mb-1"><span>Overall</span><span>{{ lesson_pct }}%</span></div>
+    <div class="progress mb-3" style="height:10px"><div class="progress-bar bg-cv" style="width: {{ lesson_pct }}%"></div></div>
+    {% for c in by_cat %}<div class="d-flex justify-content-between small"><span>{{ c.category }}</span><span class="text-secondary">{{ c.done }}/{{ c.total }}</span></div>
+    <div class="progress mb-2" style="height:6px"><div class="progress-bar bg-purple" style="width: {{ c.pct }}%"></div></div>{% endfor %}
+  </div></div>
+  <div class="col-lg-3 col-md-6"><div class="glass p-4 h-100">
+    <h2 class="h5 mb-3">{% icon 'clock' %} Recently visited</h2>
+    {% for a in recent_tools %}<a class="list-link" href="{{ a.url }}">{{ a.label }} <small class="text-secondary">{{ a.created_at|timesince }} ago</small></a>
+    {% empty %}<p class="text-secondary small">Tools you open appear here.</p>{% endfor %}
+  </div></div>
+  <div class="col-lg-4 col-md-6"><div class="glass p-4 h-100">
+    <h2 class="h5 mb-3">{% icon 'search' %} Recently searched compounds</h2>
+    {% for s in recent_searches %}<a class="chip" href="{% url 'compound_search:search' %}?q={{ s.query|urlencode }}">{{ s.query }} <small>({{ s.results }})</small></a>
+    {% empty %}<p class="text-secondary small">No searches yet.</p>{% endfor %}
+    <h3 class="h6 mt-3">{% icon 'star' 16 %} Favourites</h3>
+    {% for f in favorites %}<a class="chip" href="{% url 'compound_search:detail' f.compound.pk %}">{{ f.compound.formula|chem }}</a>{% empty %}<p class="text-secondary small mb-0">No favourites yet.</p>{% endfor %}
+  </div></div>
+</div>
+
+<div class="row g-4 mb-4">
+  <div class="col-lg-4"><div class="glass p-4 h-100">
+    <h2 class="h5 mb-3">{% icon 'hexagon' %} Saved structures</h2>
+    {% for s in structures %}<a class="list-link" href="{% url 'molecular_structure:editor' %}?id={{ s.id }}">{{ s.name }} <span class="mono small">{{ s.formula|chem }}</span></a>
+    {% empty %}<p class="text-secondary small">None yet – <a href="{% url 'molecular_structure:editor' %}">open the Structure Lab</a>.</p>{% endfor %}
+  </div></div>
+  <div class="col-lg-8"><div class="glass p-4 h-100">
+    <h2 class="h5 mb-3">{% icon 'trophy' %} Achievements</h2>
+    <div class="row g-2">{% for b in badges %}<div class="col-6 col-md-4 col-xl-2"><div class="badge-card small-card {% if b.earned %}earned{% endif %}" title="{{ b.desc }}">{% icon b.icon 22 %}<b>{{ b.title }}</b></div></div>{% endfor %}</div>
+  </div></div>
+</div>
+
+<div class="glass p-4 mb-4">
+  <h2 class="h5 mb-3">{% icon 'history' %} Recent activity</h2>
+  {% for a in recent_activity %}<div class="d-flex gap-3 py-2 border-bottom border-secondary-subtle"><span class="badge text-bg-dark">{{ a.get_kind_display }}</span><span class="flex-grow-1">{{ a.label }}</span><small class="text-secondary">{{ a.created_at|timesince }} ago</small></div>
+  {% empty %}<p class="text-secondary mb-0">Your quizzes, games, lessons and saved work will show here.</p>{% endfor %}
+  <a class="d-inline-block mt-3" href="{% url 'accounts:history' %}">Full learning history →</a>
+</div>
+
+<h2 class="h5 mb-3">Jump back in</h2>
+<div class="row g-3">{% for ic, title, text, url in tools %}<div class="col-6 col-md-4 col-xl-2"><a class="glass tool-card compact h-100" href="{% url url %}"><span class="tool-ic">{% icon ic 20 %}</span><span class="small fw-semibold mt-2 d-block">{{ title }}</span></a></div>{% endfor %}</div>
+{{ quiz_chart|json_script:"quiz-data" }}
+{{ game_chart|json_script:"game-data" }}
+{% endblock %}
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+(() => {
+  const q = JSON.parse(JSON.parse(document.getElementById('quiz-data').textContent));
+  const g = JSON.parse(JSON.parse(document.getElementById('game-data').textContent));
+  CV.chartDefaults();
+  const qc = document.getElementById('quizChart');
+  if (qc) new Chart(qc, {type: 'line', data: {labels: q.labels, datasets: [{label: 'Score %', data: q.data, borderColor: '#22d3ee', backgroundColor: 'rgba(34,211,238,.15)', fill: true, tension: .35, pointRadius: 4}]},
+    options: {maintainAspectRatio: false, scales: {y: {min: 0, max: 100}}, plugins: {legend: {display: false}}}});
+  const gc = document.getElementById('gameChart');
+  if (gc) new Chart(gc, {type: 'bar', data: {labels: g.labels, datasets: [{label: 'Points', data: g.data, backgroundColor: ['#22d3ee', '#a78bfa', '#34d399', '#f472b6', '#fbbf24', '#60a5fa', '#c084fc'], borderRadius: 6}]},
+    options: {maintainAspectRatio: false, indexAxis: 'y', plugins: {legend: {display: false}}}});
+})();
+</script>
+{% endblock %}

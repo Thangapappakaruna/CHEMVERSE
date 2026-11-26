@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}{% if editing %}Edit post{% else %}New post{% endif %}{% endblock %}
+{% block content %}
+<div class="row justify-content-center"><div class="col-lg-8"><div class="glass p-4">
+  <h1 class="h3 mb-3">{% if editing %}Edit post{% else %}Start a discussion{% endif %}</h1>
+  <form method="post" novalidate>{% csrf_token %}{% include 'includes/form_errors.html' %}
+    {% for field in form %}{% include 'includes/field.html' %}{% endfor %}
+    <p class="small text-secondary">Be kind and stay on topic. Do not post instructions for dangerous experiments.</p>
+    <button class="btn btn-cv">Publish</button> <a class="btn btn-cv-outline" href="{% url 'community:list' %}">Cancel</a>
+  </form>
+</div></div></div>
+{% endblock %}

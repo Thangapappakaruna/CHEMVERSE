@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Create account{% endblock %}
+{% block content %}
+<div class="auth-wrap">
+  <div class="glass auth-card">
+    <div class="auth-ic">{% icon 'atom' 30 %}</div>
+    <h1 class="h3 text-center mb-1">Create your CHEMVERSE account</h1>
+    <p class="text-secondary text-center mb-4">Choose a unique User ID. We will email you a verification link.</p>
+
+    <form method="post" novalidate>{% csrf_token %}
+      {% include 'includes/form_errors.html' %}
+      {% for field in form %}{% include 'includes/field.html' %}{% endfor %}
+      <button class="btn btn-cv w-100 py-2">Create account</button>
+    </form>
+    <p class="text-center small mt-3 mb-0">Already have an account? <a href="{% url 'accounts:login' %}">Sign in</a></p>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block title %}Quiz{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3 sticky-quiz glass p-3">
+  <div><b>{{ cat|default:'Mixed topics' }}</b> <span class="text-secondary small">· {{ diff|default:'any'|capfirst }} · {{ questions|length }} questions</span></div>
+  <div class="d-flex align-items-center gap-3"><span class="small" id="qProgress">0/{{ questions|length }} answered</span><span class="timer" id="quizTimer" data-seconds="{{ seconds }}">--:--</span></div>
+</div>
+<form method="post" id="quizForm">{% csrf_token %}
+  {% for q in questions %}
+  <div class="glass p-4 mb-3 question">
+    <div class="small text-secondary mb-1">Question {{ forloop.counter }} · <span class="text-cyan">{{ q.get_difficulty_display }}</span></div>
+    <h2 class="h5">{{ q.text }}</h2>
+    <div class="row g-2 mt-2">{% for key, opt in q.options %}
+      <div class="col-md-6"><label class="option"><input type="radio" name="q{{ q.id }}" value="{{ key }}"><span><b>{{ key|upper }}.</b> {{ opt }}</span></label></div>{% endfor %}</div>
+  </div>
+  {% endfor %}
+  <button class="btn btn-cv btn-lg w-100">Submit answers</button>
+</form>
+{% endblock %}
+{% block extra_js %}<script>
+(() => {const f=document.getElementById('quizForm'),el=document.getElementById('quizTimer'),pr=document.getElementById('qProgress');let s=+el.dataset.seconds;
+const total=f.querySelectorAll('.question').length;
+const tick=()=>{el.textContent=Math.floor(s/60)+':'+String(s%60).padStart(2,'0');if(s<=30)el.classList.add('urgent');if(s<=0){clearInterval(t);f.submit();}s--;};const t=setInterval(tick,1000);tick();
+f.addEventListener('change',()=>{pr.textContent=new Set([...f.querySelectorAll('input[type=radio]:checked')].map(i=>i.name)).size+'/'+total+' answered';});})();
+</script>{% endblock %}

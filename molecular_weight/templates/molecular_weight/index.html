@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}Molecular Weight Calculator{% endblock %}
+{% block content %}
+{% include 'includes/page_head.html' with title='Molecular Weight Calculator' ic='calculator' eyebrow='Molar mass' sub='Supports brackets and hydrates – e.g. Ca(OH)2, CuSO4·5H2O (use · or . for hydrates).' %}
+<form class="glass p-3 mb-3 row g-2 align-items-end" method="get">
+  <div class="col-md-5"><label class="form-label small" for="mwFormula">Formula</label><input class="form-control form-control-lg mono" id="mwFormula" name="formula" value="{{ formula }}" placeholder="C6H12O6" required data-api="{% url 'molecular_weight:api' %}"></div>
+  <div class="col-6 col-md-2"><label class="form-label small">Mass (g)</label><input class="form-control" type="number" step="any" min="0" name="grams" value="{{ grams }}"></div>
+  <div class="col-6 col-md-2"><label class="form-label small">Amount (mol)</label><input class="form-control" type="number" step="any" min="0" name="moles" value="{{ moles }}"></div>
+  <div class="col-md-3 d-grid"><button class="btn btn-cv btn-lg">Calculate</button></div>
+</form>
+<div class="d-flex flex-wrap align-items-center gap-2 mb-4"><span class="small text-secondary">Live: <b id="mwLive" class="mono">–</b></span><span class="ms-md-3 small text-secondary">Examples:</span>
+  {% for ex in examples %}<a class="chip" href="?formula={{ ex|urlencode }}">{{ ex|chem }}</a>{% endfor %}</div>
+{% if error %}<div class="alert alert-danger glass">{{ error }}</div>{% endif %}
+{% if result %}
+<div class="row g-4">
+  <div class="col-lg-7"><div class="glass p-4 h-100 result-glow">
+    <div class="small text-secondary">Molar mass of <span class="mono">{{ result.formula|chem }}</span></div>
+    <div class="display-5 fw-bold">{{ result.molar_mass }} <small class="fs-4 text-secondary">g/mol</small></div>
+    <div class="small text-secondary mb-3">{{ result.atoms }} atoms per formula unit</div>
+    {% if conv %}<div class="d-flex flex-wrap gap-3 mb-3">
+      {% if conv.moles_from_g is not None %}<div class="conv-box">{{ grams }} g = <b>{{ conv.moles_from_g }} mol</b><div class="small text-secondary">≈ {{ conv.particles }} particles</div></div>{% endif %}
+      {% if conv.grams_from_mol is not None %}<div class="conv-box">{{ moles }} mol = <b>{{ conv.grams_from_mol }} g</b></div>{% endif %}</div>{% endif %}
+    <table class="table table-cv table-sm mb-0"><thead><tr><th>Element</th><th class="text-end">Atoms</th><th class="text-end">Atomic mass</th><th class="text-end">Mass</th><th class="text-end">% by mass</th></tr></thead><tbody>
+      {% for r in result.rows %}<tr><td><a href="{% url 'periodic_table:detail' r.element %}">{{ r.element }}</a></td><td class="text-end">{{ r.count }}</td><td class="text-end">{{ r.atomic_mass }}</td><td class="text-end">{{ r.mass }}</td><td class="text-end">{{ r.percent }}%</td></tr>{% endfor %}
+      <tr class="fw-bold"><td>Total</td><td class="text-end">{{ result.atoms }}</td><td></td><td class="text-end">{{ result.molar_mass }}</td><td class="text-end">100%</td></tr></tbody></table>
+  </div></div>
+  <div class="col-lg-5"><div class="glass p-4 h-100"><h2 class="h6">Composition by mass</h2><div class="chart-box"><canvas id="mwChart"></canvas></div></div></div>
+</div>
+{% endif %}
+{% if history %}<div class="glass p-4 mt-4"><h2 class="h6">{% icon 'history' %} Recent calculations</h2>{% for h in history %}<a class="chip" href="?formula={{ h.formula|urlencode }}">{{ h.formula|chem }} · {{ h.molar_mass }}</a>{% endfor %}</div>{% endif %}
+<div id="mw-data" data-chart='{{ chart }}' hidden></div>
+{% endblock %}
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+(() => {const inp=document.getElementById('mwFormula'),out=document.getElementById('mwLive');let t;
+const live=()=>{clearTimeout(t);t=setTimeout(async()=>{if(!inp.value.trim()){out.textContent='–';return;}
+try{const d=await (await fetch(inp.dataset.api+'?formula='+encodeURIComponent(inp.value))).json();out.textContent=d.ok?d.molar_mass+' g/mol':d.error;}catch(e){out.textContent='–';}},250);};
+inp.addEventListener('input',live);live();
+const raw=document.getElementById('mw-data').dataset.chart,c=document.getElementById('mwChart');
+if(c&&raw&&raw!=='null'){CV.chartDefaults();const d=JSON.parse(raw);new Chart(c,{type:'doughnut',data:{labels:d.labels,datasets:[{data:d.data,backgroundColor:['#22d3ee','#a78bfa','#34d399','#f472b6','#fbbf24','#60a5fa','#c084fc','#fb7185'],borderWidth:0}]},options:{maintainAspectRatio:false,cutout:'62%',plugins:{tooltip:{callbacks:{label:x=>x.label+': '+x.raw+'%'}}}}});}})();
+</script>{% endblock %}

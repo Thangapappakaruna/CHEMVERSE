@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Lab Simulator{% endblock %}
+{% block content %}
+{% include 'includes/page_head.html' with title='Virtual Lab Simulator' ic='beaker' eyebrow='Safe experiments' sub='Explore classic experiments safely on screen. Results are calculated from real chemistry – but never repeat these without supervision.' %}
+<div class="row g-3">
+  {% for e in experiments %}
+  <div class="col-md-6 col-xl-4"><a class="glass tool-card h-100" href="{% url 'lab_simulator:experiment' e.slug %}">
+    <span class="eyebrow">{{ e.category }}</span><h2 class="h5 mt-2">{{ e.title }}</h2><p class="small text-secondary">{{ e.summary }}</p>
+    {% if e.safety_note %}<p class="small text-warning mb-0">{% icon 'alert' 14 %} {{ e.safety_note }}</p>{% endif %}</a></div>
+  {% empty %}<p class="text-secondary">No experiments loaded. Run <code>python manage.py seed_data</code>.</p>{% endfor %}
+</div>
+{% if logs %}<div class="glass p-4 mt-4"><h2 class="h6">{% icon 'history' %} Your lab notebook</h2>
+  {% for l in logs %}<div class="d-flex gap-3 small py-1 border-bottom border-secondary-subtle"><b>{{ l.title }}</b><span class="flex-grow-1">{{ l.result }}</span>{% if l.when %}<span class="text-secondary">{{ l.when|timesince }} ago</span>{% else %}<span class="text-secondary">this visit</span>{% endif %}</div>{% endfor %}</div>{% endif %}
+{% endblock %}

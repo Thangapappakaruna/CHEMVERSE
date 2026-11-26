@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Learning history{% endblock %}
+{% block content %}
+{% include 'includes/page_head.html' with title='Learning history' ic='history' sub='Everything you have done on CHEMVERSE, newest first.' %}
+<div class="d-flex flex-wrap gap-2 mb-3">
+  <a class="chip {% if not kind %}active{% endif %}" href="?">All</a>
+  {% for v, l in kinds %}<a class="chip {% if v == kind %}active{% endif %}" href="?kind={{ v }}">{{ l }}</a>{% endfor %}
+</div>
+<div class="glass p-0 overflow-hidden">
+  <table class="table table-cv mb-0"><thead><tr><th>When</th><th>Type</th><th>What</th></tr></thead><tbody>
+  {% for a in page %}<tr><td class="text-nowrap small">{{ a.created_at|date:"d M Y, H:i" }}</td><td><span class="badge text-bg-dark">{{ a.get_kind_display }}</span></td>
+    <td>{% if a.url %}<a href="{{ a.url }}">{{ a.label }}</a>{% else %}{{ a.label }}{% endif %}</td></tr>
+  {% empty %}<tr><td colspan="3" class="text-secondary p-4 text-center">No activity yet – open a tool to get started.</td></tr>{% endfor %}
+  </tbody></table>
+</div>
+{% include 'includes/pagination.html' %}
+{% endblock %}

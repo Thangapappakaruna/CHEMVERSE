@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block title %}Not found{% endblock %}
+{% block content %}
+<div class="glass p-5 text-center my-5 mx-auto" style="max-width:560px">
+  <div class="display-1 fw-bold grad-text">404</div>
+  <p class="lead">This page has evaporated.</p>
+  <a class="btn btn-cv" href="{% url 'dashboard:home' %}">Back to home</a>
+</div>
+{% endblock %}

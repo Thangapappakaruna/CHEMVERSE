@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Lessons{% endblock %}
+{% block content %}
+<div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4">
+  <div><div class="eyebrow">Chemistry learning</div><h1 class="h2 mb-1"><span class="head-ic">{% icon 'book' 26 %}</span>Lessons &amp; tutorials</h1>
+    <p class="text-secondary mb-0">Short lessons with definitions and examples. Each completed lesson gives 25 XP.</p></div>
+  {% if user.is_authenticated %}<div class="glass px-4 py-2 text-center"><div class="stat-n">{{ pct }}%</div><div class="stat-l">completed</div></div>{% endif %}
+</div>
+<form class="glass p-3 mb-4 row g-2 align-items-center" method="get">
+  <div class="col-md-7"><input class="form-control" name="q" value="{{ q }}" placeholder="Search lessons…"></div>
+  <div class="col-md-3"><select class="form-select" name="category"><option value="">All topics</option>{% for c in categories %}<option {% if c == cat %}selected{% endif %}>{{ c }}</option>{% endfor %}</select></div>
+  <div class="col-md-2 d-grid"><button class="btn btn-cv">Filter</button></div>
+</form>
+<div class="row g-3">
+  {% for l in lessons %}
+  <div class="col-md-6 col-xl-4"><a class="glass lesson-card h-100 {% if l.id in done %}done{% endif %}" href="{% url 'chemistry_learning:detail' l.slug %}">
+    <div class="d-flex justify-content-between align-items-start"><span class="lesson-num">{% if l.id in done %}{% icon 'check' 18 %}{% else %}{{ l.order }}{% endif %}</span>
+      <span class="badge text-bg-dark">{{ l.level }}</span></div>
+    <h2 class="h5 mt-3 mb-1">{{ l.title }}</h2><p class="small text-secondary mb-2">{{ l.summary }}</p>
+    <div class="small text-cyan">{{ l.category }} · {{ l.reading_minutes }} min read</div></a></div>
+  {% empty %}<p class="text-secondary">No lessons match your search.</p>{% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+{% block title %}{{ exp.title }}{% endblock %}
+{% block content %}
+<a class="small" href="{% url 'lab_simulator:index' %}">← Lab Simulator</a>
+<div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-3 mt-1">
+  <div><span class="eyebrow">{{ exp.category }}</span><h1 class="h2 mb-1">{{ exp.title }}</h1><p class="text-secondary mb-0">{{ exp.summary }}</p></div>
+</div>
+{% if exp.safety_note %}<div class="alert alert-warning glass py-2 small">{% icon 'alert' 14 %} {{ exp.safety_note }}</div>{% endif %}
+<div id="lab" data-exp="{{ exp.slug }}" data-record="{% url 'lab_simulator:record' exp.slug %}" data-auth="{{ user.is_authenticated|yesno:'1,0' }}">
+
+<div class="row g-4">
+  <div class="col-lg-4"><div class="glass p-4 h-100">
+    <h2 class="h6">Set-up</h2>
+    <p class="small text-secondary">25.0 mL of HCl in the flask, NaOH in the burette, phenolphthalein indicator. Strong acid + strong base.</p>
+    <label class="form-label small">HCl concentration: <b id="caV">0.10</b> M</label><input type="range" class="form-range" id="ca" min="0.05" max="0.5" step="0.01" value="0.10">
+    <label class="form-label small">NaOH concentration: <b id="cbV">0.10</b> M</label><input type="range" class="form-range" id="cb" min="0.05" max="0.5" step="0.01" value="0.10">
+    <label class="form-label small">NaOH added: <b id="vbV">0.00</b> mL</label><input type="range" class="form-range" id="vb" min="0" max="60" step="0.1" value="0">
+    <div class="d-flex gap-2 mt-2"><button class="btn btn-sm btn-cv-outline" data-add="1">+1 mL</button><button class="btn btn-sm btn-cv-outline" data-add="0.1">+0.1 mL</button><button class="btn btn-sm btn-cv-outline" id="tReset">Reset</button></div>
+  </div></div>
+  <div class="col-lg-3"><div class="glass p-4 h-100 text-center">
+    <svg viewBox="0 0 160 260" class="w-100" style="max-width:180px">
+      <rect x="72" y="5" width="16" height="120" rx="3" fill="rgba(255,255,255,.08)" stroke="#94a3b8"/><rect id="buretteLiquid" x="74" y="7" width="12" height="116" fill="#cbd5e1" opacity=".6"/>
+      <path d="M78 125 v12" stroke="#94a3b8" stroke-width="3"/>
+      <path d="M55 150 h50 v20 l30 70 a10 10 0 0 1 -9 14 h-92 a10 10 0 0 1 -9 -14 l30 -70z" fill="rgba(255,255,255,.06)" stroke="#94a3b8"/>
+      <path id="flaskLiquid" d="M38 205 h84 l12 28 a10 10 0 0 1 -9 14 h-90 a10 10 0 0 1 -9 -14z" fill="#e2e8f0" opacity=".85"/>
+    </svg>
+    <div class="display-6 fw-bold mt-2">pH <span id="phV">1.00</span></div><div class="small text-secondary" id="indV">Colourless</div>
+  </div></div>
+  <div class="col-lg-5"><div class="glass p-4 h-100"><h2 class="h6">Titration curve</h2><div class="chart-box"><canvas id="tChart"></canvas></div>
+    <p class="small text-secondary mb-0">Equivalence point: <b id="eqV">25.0</b> mL (pH 7 at 25 °C). Phenolphthalein turns pink above about pH 8.2.</p></div></div>
+</div>
+</div>
+<div class="glass p-3 mt-3 d-flex flex-wrap gap-2 align-items-center">
+  <span class="small">Result: <b id="labResult">–</b></span>
+  <button class="btn btn-sm btn-cv ms-auto" id="recordBtn">{% icon 'bookmark' 14 %} Record in my lab notebook</button>
+</div>
+{% if logs %}<div class="glass p-3 mt-3"><h2 class="h6">Your previous results</h2>{% for l in logs %}<div class="small">{{ l.created_at|date:"d M, H:i" }} – {{ l.result }}</div>{% endfor %}</div>{% endif %}
+{% endblock %}
+{% block extra_js %}{% load static %}<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script><script src="{% static 'js/lab.js' %}"></script>{% endblock %}

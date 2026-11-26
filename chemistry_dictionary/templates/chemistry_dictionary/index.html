@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}Chemistry Dictionary{% endblock %}
+{% block content %}
+{% include 'includes/page_head.html' with title='Chemistry Dictionary' ic='dictionary' eyebrow='Terminology' sub='Clear definitions of key chemistry terms, with examples.' %}
+<form class="glass p-3 mb-3 row g-2" method="get">
+  <div class="col-md-7"><input class="form-control" name="q" value="{{ q }}" placeholder="Search a term or a word in a definition…" autofocus></div>
+  <div class="col-md-3"><select class="form-select" name="category"><option value="">All categories</option>{% for c in categories %}<option {% if c == cat %}selected{% endif %}>{{ c }}</option>{% endfor %}</select></div>
+  <div class="col-md-2 d-grid"><button class="btn btn-cv">Search</button></div>
+</form>
+<div class="az mb-4"><a href="?" class="{% if not letter %}active{% endif %}">All</a>{% for c, has in letters %}{% if has %}<a href="?letter={{ c }}" class="{% if c == letter %}active{% endif %}">{{ c }}</a>{% else %}<span>{{ c }}</span>{% endif %}{% endfor %}</div>
+<p class="small text-secondary">{{ terms|length }} term{{ terms|length|pluralize }}</p>
+<div class="row g-3">
+  {% for t in terms %}<div class="col-md-6 col-xl-4"><a class="glass term-card h-100" href="{% url 'chemistry_dictionary:detail' t.slug %}">
+    <div class="d-flex justify-content-between"><h2 class="h6 mb-1">{{ t.term }}</h2><span class="badge text-bg-dark">{{ t.category }}</span></div>
+    <p class="small text-secondary mb-0">{{ t.definition|truncatechars:140 }}</p></a></div>
+  {% empty %}<p class="text-secondary">No terms found.</p>{% endfor %}
+</div>
+{% endblock %}

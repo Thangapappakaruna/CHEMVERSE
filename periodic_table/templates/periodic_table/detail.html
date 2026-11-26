@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block title %}{{ e.name }}{% endblock %}
+{% block content %}
+<nav aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="{% url 'periodic_table:table' %}">Periodic Table</a></li><li class="breadcrumb-item active">{{ e.name }}</li></ol></nav>
+<div class="row g-4">
+  <div class="col-md-4 col-lg-3"><div class="el-hero cat-{{ e.category }}"><small>{{ e.number }}</small><b>{{ e.symbol }}</b><span>{{ e.name }}</span><em>{{ e.mass_display }}</em></div></div>
+  <div class="col-md-8 col-lg-5"><div class="glass p-4 h-100">
+    <h1 class="h3 mb-1">{{ e.name }}</h1><p class="text-secondary">{{ e.category_label }}</p>
+    <table class="table table-cv table-sm mb-0">
+      <tr><th>Atomic number</th><td>{{ e.number }}</td></tr>
+      <tr><th>Symbol</th><td>{{ e.symbol }}</td></tr>
+      <tr><th>Atomic mass</th><td>{{ e.mass_display }} u{% if e.mass_is_estimate %} <span class="badge text-bg-warning">most stable isotope</span>{% endif %}</td></tr>
+      <tr><th>Group / Period / Block</th><td>{{ e.group|default_if_none:'– (f-block)' }} / {{ e.period }} / {{ e.block }}</td></tr>
+      <tr><th>Protons / Neutrons* / Electrons</th><td>{{ e.number }} / {{ neutrons }} / {{ e.number }}</td></tr>
+      <tr><th>State at 25 °C</th><td>{% if e.phase == 'unknown' %}<span class="text-secondary">Unknown (synthetic, short-lived)</span>{% else %}{{ e.phase|capfirst }}{% endif %}</td></tr>
+      <tr><th>Melting point</th><td>{{ e.melting_point|temp }}</td></tr>
+      <tr><th>Boiling point</th><td>{{ e.boiling_point|temp }}</td></tr>
+      <tr><th>Electron configuration</th><td class="mono small">{{ config }}</td></tr>
+      <tr><th>Electrons per shell</th><td class="mono">{{ shells|join:", " }}</td></tr>
+    </table>
+    <p class="small text-secondary mt-2 mb-0">*Neutrons for the most common isotope, estimated from the rounded mass. Configuration follows the Aufbau order with common d-block exceptions; some heavy elements differ. “Not available” means the value is not in our dataset.</p>
+  </div></div>
+  <div class="col-lg-4"><div class="glass p-4 h-100 text-center">
+    <canvas id="bohr" width="280" height="280" data-shells="{{ shells|join:',' }}" data-symbol="{{ e.symbol }}" aria-label="Bohr model of {{ e.name }}"></canvas>
+    <p class="small text-secondary mb-0">Bohr model (simplified)</p></div></div>
+</div>
+<div class="row g-4 mt-1">
+  {% if same_group %}<div class="col-lg-6"><div class="glass p-4 h-100"><h2 class="h6">Same group ({{ e.group }})</h2>
+    {% for g in same_group %}<a class="chip" href="{% url 'periodic_table:detail' g.symbol %}">{{ g.symbol }} · {{ g.name }}</a>{% endfor %}</div></div>{% endif %}
+  <div class="col-lg-6"><div class="glass p-4 h-100"><h2 class="h6">Compounds containing {{ e.name }}</h2>
+    {% for c in related %}<a class="chip" href="{% url 'compound_search:detail' c.pk %}">{{ c.name }} · {{ c.formula|chem }}</a>{% empty %}<p class="text-secondary small mb-0">None in our database yet.</p>{% endfor %}</div></div>
+</div>
+<div class="d-flex justify-content-between mt-4">
+  {% if prev %}<a class="btn btn-cv-outline" href="{% url 'periodic_table:detail' prev.symbol %}">← {{ prev.number }} {{ prev.name }}</a>{% else %}<span></span>{% endif %}
+  {% if next %}<a class="btn btn-cv-outline" href="{% url 'periodic_table:detail' next.symbol %}">{{ next.number }} {{ next.name }} →</a>{% endif %}
+</div>
+{% endblock %}
+{% block extra_js %}{% load static %}<script src="{% static 'js/periodic.js' %}"></script>{% endblock %}

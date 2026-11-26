@@ -1,0 +1,522 @@
+[
+ {
+  "text": "What is the chemical symbol for Sodium?",
+  "options": [
+   "S",
+   "Na",
+   "So",
+   "Sd"
+  ],
+  "answer": "b",
+  "category": "Elements",
+  "difficulty": "easy",
+  "explanation": "Na comes from the Latin 'natrium'."
+ },
+ {
+  "text": "Which element has atomic number 6?",
+  "options": [
+   "Oxygen",
+   "Nitrogen",
+   "Carbon",
+   "Boron"
+  ],
+  "answer": "c",
+  "category": "Elements",
+  "difficulty": "easy",
+  "explanation": "Carbon has 6 protons."
+ },
+ {
+  "text": "What is the boiling point of water at 1 atm?",
+  "options": [
+   "90 °C",
+   "100 °C",
+   "110 °C",
+   "0 °C"
+  ],
+  "answer": "b",
+  "category": "Properties",
+  "difficulty": "easy",
+  "explanation": "Water boils at 100 °C at sea level."
+ },
+ {
+  "text": "Which gas do plants absorb for photosynthesis?",
+  "options": [
+   "O2",
+   "N2",
+   "CO2",
+   "H2"
+  ],
+  "answer": "c",
+  "category": "General",
+  "difficulty": "easy",
+  "explanation": "Plants take in CO2 and release O2."
+ },
+ {
+  "text": "What is the pH of pure water at 25 °C?",
+  "options": [
+   "0",
+   "7",
+   "14",
+   "5"
+  ],
+  "answer": "b",
+  "category": "Acids & Bases",
+  "difficulty": "easy",
+  "explanation": "Pure water is neutral, pH 7."
+ },
+ {
+  "text": "Which of these is a noble gas?",
+  "options": [
+   "Chlorine",
+   "Argon",
+   "Hydrogen",
+   "Sodium"
+  ],
+  "answer": "b",
+  "category": "Elements",
+  "difficulty": "easy",
+  "explanation": "Argon is in group 18."
+ },
+ {
+  "text": "The chemical formula of table salt is…",
+  "options": [
+   "KCl",
+   "NaCl",
+   "CaCl2",
+   "NaOH"
+  ],
+  "answer": "b",
+  "category": "Compounds",
+  "difficulty": "easy",
+  "explanation": "Sodium chloride, NaCl."
+ },
+ {
+  "text": "Which element is liquid at room temperature?",
+  "options": [
+   "Mercury",
+   "Iron",
+   "Sulfur",
+   "Iodine"
+  ],
+  "answer": "a",
+  "category": "Elements",
+  "difficulty": "easy",
+  "explanation": "Mercury (and bromine) are liquids at room temperature."
+ },
+ {
+  "text": "What is Avogadro's number (approx.)?",
+  "options": [
+   "6.02 × 10²³",
+   "3.00 × 10⁸",
+   "9.81",
+   "1.6 × 10⁻¹⁹"
+  ],
+  "answer": "a",
+  "category": "Mole Concept",
+  "difficulty": "medium",
+  "explanation": "One mole contains 6.022 × 10²³ particles."
+ },
+ {
+  "text": "Molar mass of H2O is about…",
+  "options": [
+   "16 g/mol",
+   "18 g/mol",
+   "20 g/mol",
+   "10 g/mol"
+  ],
+  "answer": "b",
+  "category": "Mole Concept",
+  "difficulty": "medium",
+  "explanation": "2(1.008) + 16.00 ≈ 18.02 g/mol."
+ },
+ {
+  "text": "Which bond involves sharing of electrons?",
+  "options": [
+   "Ionic",
+   "Covalent",
+   "Metallic",
+   "Hydrogen"
+  ],
+  "answer": "b",
+  "category": "Bonding",
+  "difficulty": "easy",
+  "explanation": "Covalent bonds share electron pairs."
+ },
+ {
+  "text": "What type of reaction is: CH4 + 2O2 → CO2 + 2H2O?",
+  "options": [
+   "Decomposition",
+   "Combustion",
+   "Displacement",
+   "Neutralisation"
+  ],
+  "answer": "b",
+  "category": "Reactions",
+  "difficulty": "medium",
+  "explanation": "Burning a fuel in oxygen is combustion."
+ },
+ {
+  "text": "Acid + Base → ?",
+  "options": [
+   "Salt + Water",
+   "Gas + Water",
+   "Metal + Salt",
+   "Oxide"
+  ],
+  "answer": "a",
+  "category": "Acids & Bases",
+  "difficulty": "easy",
+  "explanation": "This is a neutralisation reaction."
+ },
+ {
+  "text": "Which element has the highest electronegativity?",
+  "options": [
+   "Oxygen",
+   "Chlorine",
+   "Fluorine",
+   "Nitrogen"
+  ],
+  "answer": "c",
+  "category": "Periodic Trends",
+  "difficulty": "medium",
+  "explanation": "Fluorine is the most electronegative (3.98)."
+ },
+ {
+  "text": "Atomic radius generally ___ across a period (left to right).",
+  "options": [
+   "increases",
+   "decreases",
+   "stays same",
+   "doubles"
+  ],
+  "answer": "b",
+  "category": "Periodic Trends",
+  "difficulty": "medium",
+  "explanation": "Increasing nuclear charge pulls electrons closer."
+ },
+ {
+  "text": "Which is an alkali metal?",
+  "options": [
+   "Calcium",
+   "Potassium",
+   "Aluminium",
+   "Iron"
+  ],
+  "answer": "b",
+  "category": "Elements",
+  "difficulty": "easy",
+  "explanation": "Potassium is in group 1."
+ },
+ {
+  "text": "The number of protons in an atom is its…",
+  "options": [
+   "Mass number",
+   "Atomic number",
+   "Valency",
+   "Isotope"
+  ],
+  "answer": "b",
+  "category": "Atomic Structure",
+  "difficulty": "easy",
+  "explanation": "Atomic number = protons."
+ },
+ {
+  "text": "Isotopes differ in the number of…",
+  "options": [
+   "Protons",
+   "Electrons",
+   "Neutrons",
+   "Shells"
+  ],
+  "answer": "c",
+  "category": "Atomic Structure",
+  "difficulty": "medium",
+  "explanation": "Same protons, different neutrons."
+ },
+ {
+  "text": "Which gas is produced when zinc reacts with dilute HCl?",
+  "options": [
+   "O2",
+   "H2",
+   "Cl2",
+   "CO2"
+  ],
+  "answer": "b",
+  "category": "Reactions",
+  "difficulty": "medium",
+  "explanation": "Zn + 2HCl → ZnCl2 + H2."
+ },
+ {
+  "text": "What is the main component of natural gas?",
+  "options": [
+   "Ethane",
+   "Propane",
+   "Methane",
+   "Butane"
+  ],
+  "answer": "c",
+  "category": "Organic",
+  "difficulty": "easy",
+  "explanation": "Natural gas is mostly methane, CH4."
+ },
+ {
+  "text": "Functional group of alcohols is…",
+  "options": [
+   "-COOH",
+   "-OH",
+   "-CHO",
+   "-NH2"
+  ],
+  "answer": "b",
+  "category": "Organic",
+  "difficulty": "medium",
+  "explanation": "Alcohols contain the hydroxyl group."
+ },
+ {
+  "text": "Which has the highest boiling point?",
+  "options": [
+   "Methane",
+   "Ethanol",
+   "Water",
+   "Ammonia"
+  ],
+  "answer": "c",
+  "category": "Properties",
+  "difficulty": "medium",
+  "explanation": "Water: 100 °C, due to strong hydrogen bonding."
+ },
+ {
+  "text": "Electronic configuration of Neon is…",
+  "options": [
+   "2,8",
+   "2,8,1",
+   "2,6",
+   "2,8,8"
+  ],
+  "answer": "a",
+  "category": "Atomic Structure",
+  "difficulty": "medium",
+  "explanation": "Neon has 10 electrons: 2,8."
+ },
+ {
+  "text": "Which element is the most abundant in Earth's atmosphere?",
+  "options": [
+   "Oxygen",
+   "Nitrogen",
+   "Argon",
+   "Carbon"
+  ],
+  "answer": "b",
+  "category": "General",
+  "difficulty": "easy",
+  "explanation": "About 78% of air is nitrogen."
+ },
+ {
+  "text": "Rusting of iron needs…",
+  "options": [
+   "Only water",
+   "Only oxygen",
+   "Water and oxygen",
+   "Carbon dioxide"
+  ],
+  "answer": "c",
+  "category": "Reactions",
+  "difficulty": "medium",
+  "explanation": "Both moisture and oxygen are required."
+ },
+ {
+  "text": "Which of these is a metalloid?",
+  "options": [
+   "Silicon",
+   "Sodium",
+   "Sulfur",
+   "Neon"
+  ],
+  "answer": "a",
+  "category": "Elements",
+  "difficulty": "medium",
+  "explanation": "Silicon has properties of metals and non-metals."
+ },
+ {
+  "text": "Balanced: _H2 + _O2 → _H2O",
+  "options": [
+   "1,1,1",
+   "2,1,2",
+   "2,2,2",
+   "1,2,1"
+  ],
+  "answer": "b",
+  "category": "Reactions",
+  "difficulty": "medium",
+  "explanation": "2H2 + O2 → 2H2O."
+ },
+ {
+  "text": "Litmus turns ___ in a base.",
+  "options": [
+   "red",
+   "blue",
+   "green",
+   "colourless"
+  ],
+  "answer": "b",
+  "category": "Acids & Bases",
+  "difficulty": "easy",
+  "explanation": "Bases turn red litmus blue."
+ },
+ {
+  "text": "Which element has symbol 'Fe'?",
+  "options": [
+   "Fluorine",
+   "Iron",
+   "Francium",
+   "Fermium"
+  ],
+  "answer": "b",
+  "category": "Elements",
+  "difficulty": "easy",
+  "explanation": "Fe is from Latin 'ferrum'."
+ },
+ {
+  "text": "Group 17 elements are called…",
+  "options": [
+   "Alkali metals",
+   "Halogens",
+   "Noble gases",
+   "Chalcogens"
+  ],
+  "answer": "b",
+  "category": "Periodic Trends",
+  "difficulty": "easy",
+  "explanation": "F, Cl, Br, I, At are halogens."
+ },
+ {
+  "text": "Which quantum number describes the shape of an orbital?",
+  "options": [
+   "Principal (n)",
+   "Azimuthal (l)",
+   "Magnetic (mₗ)",
+   "Spin (mₛ)"
+  ],
+  "answer": "b",
+  "category": "Atomic Structure",
+  "difficulty": "hard",
+  "explanation": "The azimuthal quantum number l gives s, p, d, f shapes."
+ },
+ {
+  "text": "What is the hybridisation of carbon in ethyne (C2H2)?",
+  "options": [
+   "sp",
+   "sp²",
+   "sp³",
+   "sp³d"
+  ],
+  "answer": "a",
+  "category": "Bonding",
+  "difficulty": "hard",
+  "explanation": "Each carbon forms two σ bonds, so it is sp hybridised."
+ },
+ {
+  "text": "What is the pH of 0.01 M HCl?",
+  "options": [
+   "1",
+   "2",
+   "12",
+   "7"
+  ],
+  "answer": "b",
+  "category": "Acids & Bases",
+  "difficulty": "hard",
+  "explanation": "pH = −log[H⁺] = −log(0.01) = 2."
+ },
+ {
+  "text": "How many moles are in 9 g of water (M = 18 g/mol)?",
+  "options": [
+   "0.5 mol",
+   "2 mol",
+   "9 mol",
+   "0.18 mol"
+  ],
+  "answer": "a",
+  "category": "Mole Concept",
+  "difficulty": "hard",
+  "explanation": "n = m/M = 9/18 = 0.5 mol."
+ },
+ {
+  "text": "In 2KMnO4 + 16HCl → 2KCl + 2MnCl2 + 8H2O + 5Cl2, what is reduced?",
+  "options": [
+   "Cl",
+   "Mn",
+   "K",
+   "H"
+  ],
+  "answer": "b",
+  "category": "Reactions",
+  "difficulty": "hard",
+  "explanation": "Mn goes from +7 to +2, so it is reduced."
+ },
+ {
+  "text": "Which shape does SF6 have?",
+  "options": [
+   "Tetrahedral",
+   "Trigonal bipyramidal",
+   "Octahedral",
+   "Square planar"
+  ],
+  "answer": "c",
+  "category": "Bonding",
+  "difficulty": "hard",
+  "explanation": "Six bonding pairs, no lone pairs → octahedral."
+ },
+ {
+  "text": "What is the oxidation state of Cr in K2Cr2O7?",
+  "options": [
+   "+3",
+   "+6",
+   "+7",
+   "+2"
+  ],
+  "answer": "b",
+  "category": "Reactions",
+  "difficulty": "hard",
+  "explanation": "2(+1) + 2x + 7(−2) = 0 → x = +6."
+ },
+ {
+  "text": "At STP, one mole of an ideal gas occupies about…",
+  "options": [
+   "22.4 L",
+   "24.0 L",
+   "1.0 L",
+   "11.2 L"
+  ],
+  "answer": "a",
+  "category": "Gas Laws",
+  "difficulty": "hard",
+  "explanation": "At 0 °C and 1 atm, the molar volume is ≈ 22.4 L."
+ },
+ {
+  "text": "Which element has the electron configuration [Ar] 3d10 4s1?",
+  "options": [
+   "Zinc",
+   "Copper",
+   "Nickel",
+   "Potassium"
+  ],
+  "answer": "b",
+  "category": "Atomic Structure",
+  "difficulty": "hard",
+  "explanation": "Copper prefers a full 3d subshell: [Ar] 3d¹⁰ 4s¹."
+ },
+ {
+  "text": "Boyle's law states that, at constant temperature…",
+  "options": [
+   "V ∝ T",
+   "P ∝ 1/V",
+   "P ∝ T",
+   "V ∝ n"
+  ],
+  "answer": "b",
+  "category": "Gas Laws",
+  "difficulty": "hard",
+  "explanation": "Pressure is inversely proportional to volume (PV = constant)."
+ }
+]

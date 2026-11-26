@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}Periodic Table{% endblock %}
+{% block content %}
+<div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-3">
+  <div><div class="eyebrow">Interactive</div><h1 class="h2 mb-1"><span class="head-ic">{% icon 'table' 26 %}</span>Periodic Table</h1>
+    <p class="text-secondary mb-0">All 118 elements. Hover for a summary, click for full properties.</p></div>
+  <form class="d-flex gap-2" method="get" role="search"><input id="ptSearch" class="form-control" name="q" value="{{ q }}" placeholder="Name, symbol or number" autocomplete="off"><button class="btn btn-cv">Go</button></form>
+</div>
+{% if q %}<div class="alert alert-warning glass py-2">No element exactly matches “{{ q }}”. The table below is filtered instead.</div>{% endif %}
+<div class="legend mb-3">
+  <button class="chip active" data-cat="all">All</button>
+  {% for key, label in categories.items %}<button class="chip cat-{{ key }}" data-cat="{{ key }}"><i></i>{{ label }}</button>{% endfor %}
+</div>
+<div class="pt-scroll glass p-3">
+  <div class="ptable" id="ptable">
+    {% for e in elements %}
+    <a href="{% url 'periodic_table:detail' e.symbol %}" class="el cat-{{ e.category }}" style="grid-column:{{ e.grid_col }};grid-row:{{ e.grid_row }}"
+       data-name="{{ e.name }}" data-symbol="{{ e.symbol }}" data-number="{{ e.number }}" data-mass="{{ e.mass_display }}" data-cat="{{ e.category }}"
+       data-catlabel="{{ e.category_label }}" data-phase="{{ e.phase }}" data-group="{{ e.group|default_if_none:'–' }}" data-period="{{ e.period }}">
+      <small>{{ e.number }}</small><b>{{ e.symbol }}</b><span>{{ e.name }}</span>
+    </a>
+    {% endfor %}
+    <div class="pt-info" id="ptInfo"><div class="pt-big">⚛</div><div><h3 class="h5 mb-1">Hover an element</h3><p class="small text-secondary mb-0">Atomic number, mass, group, period and category appear here.</p></div></div>
+    <div class="pt-flabel" style="grid-column:1/3;grid-row:9">Lanthanides</div>
+    <div class="pt-flabel" style="grid-column:1/3;grid-row:10">Actinides</div>
+  </div>
+</div>
+<p class="small text-secondary mt-2">Masses in [brackets] are the mass number of the most stable isotope (no standard atomic weight).</p>
+{% endblock %}
+{% block extra_js %}{% load static %}<script src="{% static 'js/periodic.js' %}"></script>{% endblock %}

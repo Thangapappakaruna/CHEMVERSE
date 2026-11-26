@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% block title %}Boiling & Melting Points{% endblock %}
+{% block content %}
+{% include 'includes/page_head.html' with title='Boiling & Melting Points' ic='thermo' eyebrow='Physical properties' sub='Filter by temperature range, check the state at any temperature, and compare compounds on a chart.' %}
+<form class="glass p-3 mb-4" method="get">
+  <div class="row g-2 align-items-end">
+    <div class="col-6 col-md-2"><label class="form-label small">Melting ≥ °C</label><input class="form-control" type="number" step="any" name="mp_min" value="{{ params.mp_min }}"></div>
+    <div class="col-6 col-md-2"><label class="form-label small">Melting ≤ °C</label><input class="form-control" type="number" step="any" name="mp_max" value="{{ params.mp_max }}"></div>
+    <div class="col-6 col-md-2"><label class="form-label small">Boiling ≥ °C</label><input class="form-control" type="number" step="any" name="bp_min" value="{{ params.bp_min }}"></div>
+    <div class="col-6 col-md-2"><label class="form-label small">Boiling ≤ °C</label><input class="form-control" type="number" step="any" name="bp_max" value="{{ params.bp_max }}"></div>
+    <div class="col-6 col-md-2"><label class="form-label small">State at T (°C)</label><input class="form-control" type="number" step="any" name="t" value="{{ params.t }}" placeholder="e.g. 50"></div>
+    <div class="col-6 col-md-2"><div class="form-check mb-2"><input class="form-check-input" type="checkbox" name="elements" value="1" id="incEl" {% if params.elements %}checked{% endif %}><label class="form-check-label small" for="incEl">Include elements</label></div>
+      <div class="d-flex gap-2"><button class="btn btn-cv flex-grow-1">Apply</button><a class="btn btn-cv-outline" href="{% url 'boiling_melting:index' %}">Reset</a></div></div>
+  </div>
+</form>
+<div class="row g-4">
+  <div class="col-lg-8">
+    <form method="get" action="{% url 'boiling_melting:compare' %}" id="cmpForm">
+    <div class="glass p-0 overflow-hidden"><div class="table-responsive"><table class="table table-cv table-hover align-middle mb-0">
+      <thead><tr><th style="width:40px"></th><th>Compound</th><th class="text-end">Melting</th><th class="text-end">Boiling</th><th class="text-end">Liquid range</th><th>{% if t is not None %}State at {{ t }} °C{% else %}State 25 °C{% endif %}</th></tr></thead>
+      <tbody>{% for c in rows %}<tr>
+        <td><input class="form-check-input cmp-box" type="checkbox" name="c" value="{{ c.pk }}" aria-label="Compare {{ c.name }}"></td>
+        <td><a href="{% url 'compound_search:detail' c.pk %}">{{ c.name }}</a> <span class="mono small text-secondary">{{ c.formula|chem }}</span></td>
+        <td class="text-end">{% if c.melting_point is not None %}{{ c.melting_point }}{% else %}<span class="text-secondary" title="{{ c.mp_note }}">n/a</span>{% endif %}</td>
+        <td class="text-end">{% if c.boiling_point is not None %}{{ c.boiling_point }}{% else %}<span class="text-secondary" title="{{ c.bp_note }}">n/a</span>{% endif %}</td>
+        <td class="text-end">{% if c.liquid_range is not None %}{{ c.liquid_range }} °C{% else %}–{% endif %}</td>
+        <td>{% if t is not None %}<span class="state state-{{ c.state_t }}">{{ c.state_t|capfirst }}</span>{% else %}<span class="state state-{{ c.state }}">{{ c.get_state_display }}</span>{% endif %}</td>
+      </tr>{% empty %}<tr><td colspan="6" class="text-center text-secondary p-4">No compounds in this range.</td></tr>{% endfor %}</tbody>
+    </table></div></div>
+    <div class="cmp-bar glass" id="cmpBar"><span id="cmpCount">0 selected</span><button class="btn btn-cv btn-sm" id="cmpGo" disabled>{% icon 'chart' %} Compare on chart</button></div>
+    </form>
+    <p class="small text-secondary mt-2">“n/a” = the substance decomposes or sublimes, or no reliable value is available – hover for the note. Liquid range is boiling − melting.</p>
+    {% if elements %}<h2 class="h5 mt-4">Elements in this range</h2>
+    <div class="glass p-0 overflow-hidden"><table class="table table-cv table-sm mb-0"><thead><tr><th>Element</th><th class="text-end">Melting °C</th><th class="text-end">Boiling °C</th></tr></thead>
+      <tbody>{% for e in elements %}<tr><td><a href="{% url 'periodic_table:detail' e.symbol %}">{{ e.symbol }} – {{ e.name }}</a></td><td class="text-end">{{ e.melting_point|default_if_none:'n/a' }}</td><td class="text-end">{{ e.boiling_point|default_if_none:'n/a' }}</td></tr>{% endfor %}</tbody></table></div>{% endif %}
+  </div>
+  <div class="col-lg-4">
+    <div class="glass p-4 mb-4"><h2 class="h6">How to read the data</h2>
+      <p class="small mb-1"><b>Below the melting point</b> → solid.</p><p class="small mb-1"><b>Between melting and boiling</b> → liquid.</p><p class="small mb-0"><b>Above the boiling point</b> → gas (at 1 atm).</p></div>
+    {% if user.is_authenticated %}<div class="glass p-4"><h2 class="h6">{% icon 'bookmark' %} Saved comparisons</h2>
+      {% for s in saved %}<div class="d-flex justify-content-between align-items-center py-1">
+        <a href="{% url 'boiling_melting:compare' %}?{% for c in s.compounds.all %}c={{ c.pk }}&{% endfor %}">{{ s.name }}</a>
+        <form method="post" action="{% url 'boiling_melting:delete' s.pk %}">{% csrf_token %}<button class="btn btn-sm btn-link text-danger" title="Delete">{% icon 'trash' 14 %}</button></form></div>
+      {% empty %}<p class="small text-secondary mb-0">Compare two or more compounds and save the set.</p>{% endfor %}</div>{% endif %}
+  </div>
+</div>
+{% endblock %}
+{% block extra_js %}<script>
+(() => {const boxes=[...document.querySelectorAll('.cmp-box')],go=document.getElementById('cmpGo'),cnt=document.getElementById('cmpCount');
+const upd=()=>{const n=boxes.filter(b=>b.checked).length;cnt.textContent=n+' selected (max 8)';go.disabled=n<2||n>8;};boxes.forEach(b=>b.addEventListener('change',upd));upd();})();
+</script>{% endblock %}

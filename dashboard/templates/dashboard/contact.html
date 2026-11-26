@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Contact{% endblock %}
+{% block content %}
+{% include 'includes/page_head.html' with title='Contact us' ic='mail' sub='Questions, suggestions or data corrections – we read every message.' %}
+<div class="row g-4">
+  <div class="col-lg-7"><div class="glass p-4">
+    <form method="post" novalidate>{% csrf_token %}
+      {% for field in form %}{% include 'includes/field.html' %}{% endfor %}
+      <button class="btn btn-cv">{% icon 'mail' %} Send message</button>
+    </form>
+  </div></div>
+  <div class="col-lg-5"><div class="glass p-4">
+    <h2 class="h5">Found a data error?</h2>
+    <p class="text-secondary">Tell us the compound or element, the value you believe is correct, and your source. We prefer values from IUPAC, the CRC Handbook or PubChem.</p>
+    <h2 class="h5 mt-4">Community help</h2>
+    <p class="text-secondary mb-0">For chemistry questions, the <a href="{% url 'community:list' %}">community forum</a> is the fastest way to get answers.</p>
+  </div></div>
+</div>
+{% endblock %}

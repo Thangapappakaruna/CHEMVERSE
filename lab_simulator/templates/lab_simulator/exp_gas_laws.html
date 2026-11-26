@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}{{ exp.title }}{% endblock %}
+{% block content %}
+<a class="small" href="{% url 'lab_simulator:index' %}">← Lab Simulator</a>
+<div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-3 mt-1">
+  <div><span class="eyebrow">{{ exp.category }}</span><h1 class="h2 mb-1">{{ exp.title }}</h1><p class="text-secondary mb-0">{{ exp.summary }}</p></div>
+</div>
+{% if exp.safety_note %}<div class="alert alert-warning glass py-2 small">{% icon 'alert' 14 %} {{ exp.safety_note }}</div>{% endif %}
+<div id="lab" data-exp="{{ exp.slug }}" data-record="{% url 'lab_simulator:record' exp.slug %}" data-auth="{{ user.is_authenticated|yesno:'1,0' }}">
+
+<div class="row g-4">
+  <div class="col-lg-4"><div class="glass p-4 h-100"><h2 class="h6">Ideal gas: PV = nRT</h2>
+    <label class="form-label small">Amount n: <b id="nV">1.00</b> mol</label><input type="range" class="form-range" id="gn" min="0.1" max="5" step="0.05" value="1">
+    <label class="form-label small">Temperature T: <b id="tV">273</b> K (<span id="tcV">0</span> °C)</label><input type="range" class="form-range" id="gt" min="100" max="800" step="1" value="273">
+    <label class="form-label small">Volume V: <b id="vV">22.4</b> L</label><input type="range" class="form-range" id="gv" min="2" max="60" step="0.1" value="22.4">
+    <div class="display-6 fw-bold mt-2">P = <span id="pV">1.00</span> atm</div>
+    <p class="small text-secondary mb-0">R = 0.08206 L·atm·mol⁻¹·K⁻¹. At 273 K and 1 atm, 1 mol occupies ≈ 22.4 L.</p></div></div>
+  <div class="col-lg-3"><div class="glass p-4 h-100 text-center"><canvas id="gasBox" width="220" height="260" aria-label="Gas particles in a container"></canvas><p class="small text-secondary mb-0">Particles speed up as T rises; a smaller box means more collisions (higher P).</p></div></div>
+  <div class="col-lg-5"><div class="glass p-4 h-100"><h2 class="h6">Boyle's law isotherm (P vs V at current n, T)</h2><div class="chart-box"><canvas id="gasChart"></canvas></div></div></div>
+</div>
+</div>
+<div class="glass p-3 mt-3 d-flex flex-wrap gap-2 align-items-center">
+  <span class="small">Result: <b id="labResult">–</b></span>
+  <button class="btn btn-sm btn-cv ms-auto" id="recordBtn">{% icon 'bookmark' 14 %} Record in my lab notebook</button>
+</div>
+{% if logs %}<div class="glass p-3 mt-3"><h2 class="h6">Your previous results</h2>{% for l in logs %}<div class="small">{{ l.created_at|date:"d M, H:i" }} – {{ l.result }}</div>{% endfor %}</div>{% endif %}
+{% endblock %}
+{% block extra_js %}{% load static %}<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script><script src="{% static 'js/lab.js' %}"></script>{% endblock %}

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}Leaderboard{% endblock %}
+{% block content %}
+{% include 'includes/page_head.html' with title='Leaderboard' ic='trophy' sub='Top 25 learners.' %}
+<ul class="nav nav-pills mb-3">
+  <li class="nav-item"><a class="nav-link {% if board == 'quiz' %}active{% endif %}" href="?board=quiz">Quiz</a></li>
+  <li class="nav-item"><a class="nav-link {% if board == 'games' %}active{% endif %}" href="?board=games">Games</a></li>
+  <li class="nav-item"><a class="nav-link {% if board == 'xp' %}active{% endif %}" href="?board=xp">Overall XP</a></li>
+</ul>
+<div class="glass p-0 overflow-hidden"><table class="table table-cv mb-0 align-middle"><thead><tr><th style="width:70px">Rank</th><th>Learner</th><th class="text-end">{{ label }}</th><th class="text-end">{% if board == 'xp' %}Level{% elif board == 'games' %}Games played{% else %}Quizzes{% endif %}</th></tr></thead><tbody>
+  {% for r in rows %}<tr class="{% if r.user__username == user.username %}me-row{% endif %}">
+    <td class="fs-5">{% if forloop.counter == 1 %}🥇{% elif forloop.counter == 2 %}🥈{% elif forloop.counter == 3 %}🥉{% else %}{{ forloop.counter }}{% endif %}</td>
+    <td><a href="{% url 'accounts:profile' r.user__username %}">{{ r.user__username }}</a></td><td class="text-end fw-bold">{{ r.value }}</td><td class="text-end">{{ r.n }}</td></tr>
+  {% empty %}<tr><td colspan="4" class="text-center text-secondary p-4">No scores yet.</td></tr>{% endfor %}
+</tbody></table></div>
+{% endblock %}

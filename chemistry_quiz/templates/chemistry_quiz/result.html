@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Quiz result{% endblock %}
+{% block content %}
+<div class="glass p-5 text-center mb-4 result-glow">
+  <div class="small text-secondary">Your score</div>
+  <div class="display-3 fw-bold grad-text">{{ score }}/{{ total }}</div>
+  <p class="lead mb-1">{{ pct }}% · {{ duration }} s</p>
+  <p>{% if pct >= 80 %}Outstanding! 🏆{% elif pct >= 50 %}Good work – keep practising.{% else %}Review the explanations below and try again.{% endif %} {% if user.is_authenticated %}+{{ score }}×5 XP{% endif %}</p>
+  {% if not user.is_authenticated %}<p class="small text-secondary">Guest mode: this result is kept for this visit only. <a href="{% url 'accounts:register' %}">Create a free account</a> to save results and appear on the leaderboard.</p>{% endif %}
+  <div class="d-flex justify-content-center gap-2"><a class="btn btn-cv" href="{% url 'chemistry_quiz:index' %}">New quiz</a><a class="btn btn-cv-outline" href="{% url 'chemistry_quiz:leaderboard' %}">Leaderboard</a></div>
+</div>
+{% for r in review %}
+<div class="glass p-4 mb-3 {% if r.ok %}q-ok{% else %}q-bad{% endif %}">
+  <h2 class="h6">{{ forloop.counter }}. {{ r.q.text }}</h2>
+  {% for key, opt in r.q.options %}<div class="small {% if key == r.q.answer %}text-success fw-semibold{% elif key == r.given %}text-danger{% else %}text-secondary{% endif %}">{{ key|upper }}. {{ opt }}{% if key == r.q.answer %} ✓{% elif key == r.given %} ✗ (your answer){% endif %}</div>{% endfor %}
+  {% if not r.given %}<div class="small text-warning">Not answered</div>{% endif %}
+  {% if r.q.explanation %}<div class="small mt-2">💡 {{ r.q.explanation }}</div>{% endif %}
+</div>
+{% endfor %}
+{% endblock %}

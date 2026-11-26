@@ -1,0 +1,457 @@
+[
+ {
+  "term": "Acid",
+  "slug": "acid",
+  "category": "Acids & Bases",
+  "definition": "A substance that donates protons (H⁺) in solution (Brønsted–Lowry) or accepts an electron pair (Lewis).",
+  "example": "HCl, CH₃COOH"
+ },
+ {
+  "term": "Activation energy",
+  "slug": "activation-energy",
+  "category": "Kinetics",
+  "definition": "The minimum energy colliding particles need for a reaction to occur.",
+  "example": "A catalyst lowers the activation energy."
+ },
+ {
+  "term": "Alkali",
+  "slug": "alkali",
+  "category": "Acids & Bases",
+  "definition": "A base that dissolves in water, producing hydroxide ions (OH⁻).",
+  "example": "NaOH, KOH"
+ },
+ {
+  "term": "Alkane",
+  "slug": "alkane",
+  "category": "Organic",
+  "definition": "A saturated hydrocarbon containing only C–C single bonds; general formula CₙH₂ₙ₊₂.",
+  "example": "Methane, propane"
+ },
+ {
+  "term": "Alkene",
+  "slug": "alkene",
+  "category": "Organic",
+  "definition": "An unsaturated hydrocarbon containing at least one C=C double bond; general formula CₙH₂ₙ.",
+  "example": "Ethene"
+ },
+ {
+  "term": "Allotrope",
+  "slug": "allotrope",
+  "category": "General",
+  "definition": "Different structural forms of the same element in the same physical state.",
+  "example": "Diamond and graphite (carbon); O₂ and O₃"
+ },
+ {
+  "term": "Anion",
+  "slug": "anion",
+  "category": "Atomic Structure",
+  "definition": "A negatively charged ion, formed when an atom gains electrons.",
+  "example": "Cl⁻, O²⁻"
+ },
+ {
+  "term": "Anode",
+  "slug": "anode",
+  "category": "Electrochemistry",
+  "definition": "The electrode where oxidation takes place.",
+  "example": ""
+ },
+ {
+  "term": "Atom",
+  "slug": "atom",
+  "category": "Atomic Structure",
+  "definition": "The smallest particle of an element that keeps its chemical identity; a nucleus surrounded by electrons.",
+  "example": ""
+ },
+ {
+  "term": "Atomic number",
+  "slug": "atomic-number",
+  "category": "Atomic Structure",
+  "definition": "The number of protons in the nucleus of an atom (symbol Z).",
+  "example": "Carbon has Z = 6."
+ },
+ {
+  "term": "Avogadro constant",
+  "slug": "avogadro-constant",
+  "category": "Stoichiometry",
+  "definition": "The number of particles in one mole: 6.022 × 10²³ mol⁻¹.",
+  "example": ""
+ },
+ {
+  "term": "Base",
+  "slug": "base",
+  "category": "Acids & Bases",
+  "definition": "A substance that accepts protons (H⁺) or donates an electron pair.",
+  "example": "NH₃, OH⁻"
+ },
+ {
+  "term": "Boiling point",
+  "slug": "boiling-point",
+  "category": "Physical Chemistry",
+  "definition": "The temperature at which a liquid's vapour pressure equals the surrounding pressure, so it boils.",
+  "example": "Water: 100 °C at 1 atm"
+ },
+ {
+  "term": "Catalyst",
+  "slug": "catalyst",
+  "category": "Kinetics",
+  "definition": "A substance that speeds up a reaction without being used up, by providing a route with lower activation energy.",
+  "example": "Iron in the Haber process"
+ },
+ {
+  "term": "Cathode",
+  "slug": "cathode",
+  "category": "Electrochemistry",
+  "definition": "The electrode where reduction takes place.",
+  "example": ""
+ },
+ {
+  "term": "Cation",
+  "slug": "cation",
+  "category": "Atomic Structure",
+  "definition": "A positively charged ion, formed when an atom loses electrons.",
+  "example": "Na⁺, Ca²⁺"
+ },
+ {
+  "term": "Chemical bond",
+  "slug": "chemical-bond",
+  "category": "Bonding",
+  "definition": "An attraction that holds atoms or ions together in a substance.",
+  "example": ""
+ },
+ {
+  "term": "Compound",
+  "slug": "compound",
+  "category": "General",
+  "definition": "A substance made of two or more elements chemically combined in a fixed ratio.",
+  "example": "H₂O, NaCl"
+ },
+ {
+  "term": "Concentration",
+  "slug": "concentration",
+  "category": "Stoichiometry",
+  "definition": "The amount of solute in a given volume of solution, often in mol/dm³ (M).",
+  "example": ""
+ },
+ {
+  "term": "Covalent bond",
+  "slug": "covalent-bond",
+  "category": "Bonding",
+  "definition": "A shared pair of electrons between two atoms.",
+  "example": "H–H in hydrogen gas"
+ },
+ {
+  "term": "Decomposition",
+  "slug": "decomposition",
+  "category": "Reactions",
+  "definition": "A reaction in which one substance breaks down into two or more simpler substances.",
+  "example": "2H₂O₂ → 2H₂O + O₂"
+ },
+ {
+  "term": "Density",
+  "slug": "density",
+  "category": "Physical Chemistry",
+  "definition": "Mass per unit volume (ρ = m/V).",
+  "example": "Water ≈ 1.00 g/cm³"
+ },
+ {
+  "term": "Distillation",
+  "slug": "distillation",
+  "category": "Lab Skills",
+  "definition": "Separating liquids by boiling and condensing them, based on different boiling points.",
+  "example": ""
+ },
+ {
+  "term": "Electrolysis",
+  "slug": "electrolysis",
+  "category": "Electrochemistry",
+  "definition": "Decomposing a compound by passing an electric current through it when molten or dissolved.",
+  "example": "2H₂O → 2H₂ + O₂"
+ },
+ {
+  "term": "Electron",
+  "slug": "electron",
+  "category": "Atomic Structure",
+  "definition": "A subatomic particle with a charge of −1 and very small mass, found in shells around the nucleus.",
+  "example": ""
+ },
+ {
+  "term": "Electron configuration",
+  "slug": "electron-configuration",
+  "category": "Atomic Structure",
+  "definition": "The arrangement of electrons in an atom's orbitals.",
+  "example": "Na: 1s² 2s² 2p⁶ 3s¹"
+ },
+ {
+  "term": "Electronegativity",
+  "slug": "electronegativity",
+  "category": "Bonding",
+  "definition": "The ability of an atom to attract the shared electrons in a covalent bond.",
+  "example": "Fluorine is the most electronegative element."
+ },
+ {
+  "term": "Element",
+  "slug": "element",
+  "category": "General",
+  "definition": "A pure substance made of only one kind of atom (all with the same atomic number).",
+  "example": ""
+ },
+ {
+  "term": "Endothermic",
+  "slug": "endothermic",
+  "category": "Thermochemistry",
+  "definition": "A process that absorbs heat from the surroundings (ΔH > 0).",
+  "example": "Melting ice"
+ },
+ {
+  "term": "Enthalpy",
+  "slug": "enthalpy",
+  "category": "Thermochemistry",
+  "definition": "The heat content of a system at constant pressure; changes are written ΔH.",
+  "example": ""
+ },
+ {
+  "term": "Equilibrium",
+  "slug": "equilibrium",
+  "category": "Kinetics",
+  "definition": "The state of a reversible reaction where forward and backward rates are equal, so concentrations stay constant.",
+  "example": ""
+ },
+ {
+  "term": "Exothermic",
+  "slug": "exothermic",
+  "category": "Thermochemistry",
+  "definition": "A process that releases heat to the surroundings (ΔH < 0).",
+  "example": "Combustion"
+ },
+ {
+  "term": "Functional group",
+  "slug": "functional-group",
+  "category": "Organic",
+  "definition": "A group of atoms responsible for the characteristic reactions of an organic molecule.",
+  "example": "–OH, –COOH"
+ },
+ {
+  "term": "Group",
+  "slug": "group",
+  "category": "Periodic Table",
+  "definition": "A vertical column of the periodic table; elements in a group have the same number of valence electrons.",
+  "example": ""
+ },
+ {
+  "term": "Halogen",
+  "slug": "halogen",
+  "category": "Periodic Table",
+  "definition": "An element of group 17: F, Cl, Br, I, At, Ts.",
+  "example": ""
+ },
+ {
+  "term": "Hydrocarbon",
+  "slug": "hydrocarbon",
+  "category": "Organic",
+  "definition": "A compound containing only carbon and hydrogen.",
+  "example": ""
+ },
+ {
+  "term": "Hydrogen bond",
+  "slug": "hydrogen-bond",
+  "category": "Bonding",
+  "definition": "A strong intermolecular attraction between an H atom bonded to N, O or F and a lone pair on another N, O or F.",
+  "example": "Between water molecules"
+ },
+ {
+  "term": "Indicator",
+  "slug": "indicator",
+  "category": "Acids & Bases",
+  "definition": "A substance that changes colour depending on pH.",
+  "example": "Litmus, phenolphthalein"
+ },
+ {
+  "term": "Ion",
+  "slug": "ion",
+  "category": "Atomic Structure",
+  "definition": "An atom or group of atoms with an electric charge.",
+  "example": ""
+ },
+ {
+  "term": "Ionic bond",
+  "slug": "ionic-bond",
+  "category": "Bonding",
+  "definition": "Electrostatic attraction between oppositely charged ions.",
+  "example": "Na⁺ and Cl⁻"
+ },
+ {
+  "term": "Isomer",
+  "slug": "isomer",
+  "category": "Organic",
+  "definition": "Compounds with the same molecular formula but different arrangements of atoms.",
+  "example": "Butane and 2-methylpropane"
+ },
+ {
+  "term": "Isotope",
+  "slug": "isotope",
+  "category": "Atomic Structure",
+  "definition": "Atoms of the same element with different numbers of neutrons.",
+  "example": "C-12 and C-14"
+ },
+ {
+  "term": "Mass number",
+  "slug": "mass-number",
+  "category": "Atomic Structure",
+  "definition": "The total number of protons and neutrons in a nucleus (symbol A).",
+  "example": ""
+ },
+ {
+  "term": "Melting point",
+  "slug": "melting-point",
+  "category": "Physical Chemistry",
+  "definition": "The temperature at which a solid turns into a liquid.",
+  "example": "Ice: 0 °C"
+ },
+ {
+  "term": "Mixture",
+  "slug": "mixture",
+  "category": "General",
+  "definition": "Two or more substances physically combined, not chemically bonded.",
+  "example": "Air, salt water"
+ },
+ {
+  "term": "Molar mass",
+  "slug": "molar-mass",
+  "category": "Stoichiometry",
+  "definition": "The mass of one mole of a substance, in g/mol.",
+  "example": "H₂O ≈ 18.02 g/mol"
+ },
+ {
+  "term": "Mole",
+  "slug": "mole",
+  "category": "Stoichiometry",
+  "definition": "The SI unit of amount of substance; contains 6.022 × 10²³ particles.",
+  "example": ""
+ },
+ {
+  "term": "Molecule",
+  "slug": "molecule",
+  "category": "General",
+  "definition": "Two or more atoms covalently bonded together.",
+  "example": "O₂, H₂O"
+ },
+ {
+  "term": "Neutralisation",
+  "slug": "neutralisation",
+  "category": "Acids & Bases",
+  "definition": "The reaction of an acid with a base to form a salt and water.",
+  "example": "HCl + NaOH → NaCl + H₂O"
+ },
+ {
+  "term": "Neutron",
+  "slug": "neutron",
+  "category": "Atomic Structure",
+  "definition": "A neutral subatomic particle found in the nucleus, with mass ≈ 1 u.",
+  "example": ""
+ },
+ {
+  "term": "Noble gas",
+  "slug": "noble-gas",
+  "category": "Periodic Table",
+  "definition": "An element of group 18, with a full outer shell and very low reactivity.",
+  "example": "He, Ne, Ar"
+ },
+ {
+  "term": "Oxidation",
+  "slug": "oxidation",
+  "category": "Reactions",
+  "definition": "Loss of electrons (or increase in oxidation state).",
+  "example": "Fe → Fe³⁺ + 3e⁻"
+ },
+ {
+  "term": "Period",
+  "slug": "period",
+  "category": "Periodic Table",
+  "definition": "A horizontal row of the periodic table.",
+  "example": ""
+ },
+ {
+  "term": "pH",
+  "slug": "ph",
+  "category": "Acids & Bases",
+  "definition": "A measure of acidity: pH = −log₁₀[H⁺]. Below 7 is acidic, 7 neutral, above 7 basic (at 25 °C).",
+  "example": ""
+ },
+ {
+  "term": "Polymer",
+  "slug": "polymer",
+  "category": "Organic",
+  "definition": "A large molecule made of many repeating units (monomers).",
+  "example": "Polyethylene"
+ },
+ {
+  "term": "Precipitate",
+  "slug": "precipitate",
+  "category": "Reactions",
+  "definition": "An insoluble solid formed when two solutions react.",
+  "example": "AgCl from AgNO₃ + NaCl"
+ },
+ {
+  "term": "Proton",
+  "slug": "proton",
+  "category": "Atomic Structure",
+  "definition": "A positively charged subatomic particle in the nucleus.",
+  "example": ""
+ },
+ {
+  "term": "Redox",
+  "slug": "redox",
+  "category": "Reactions",
+  "definition": "A reaction in which reduction and oxidation happen together.",
+  "example": ""
+ },
+ {
+  "term": "Reduction",
+  "slug": "reduction",
+  "category": "Reactions",
+  "definition": "Gain of electrons (or decrease in oxidation state).",
+  "example": "Cu²⁺ + 2e⁻ → Cu"
+ },
+ {
+  "term": "Salt",
+  "slug": "salt",
+  "category": "Acids & Bases",
+  "definition": "An ionic compound formed when the hydrogen of an acid is replaced by a metal or ammonium ion.",
+  "example": "NaCl, CuSO₄"
+ },
+ {
+  "term": "Solute",
+  "slug": "solute",
+  "category": "Solutions",
+  "definition": "The substance that dissolves in a solvent.",
+  "example": ""
+ },
+ {
+  "term": "Solvent",
+  "slug": "solvent",
+  "category": "Solutions",
+  "definition": "The substance in which a solute dissolves.",
+  "example": "Water"
+ },
+ {
+  "term": "Stoichiometry",
+  "slug": "stoichiometry",
+  "category": "Stoichiometry",
+  "definition": "The calculation of quantities of reactants and products using balanced equations.",
+  "example": ""
+ },
+ {
+  "term": "Sublimation",
+  "slug": "sublimation",
+  "category": "Physical Chemistry",
+  "definition": "A change directly from solid to gas without becoming liquid.",
+  "example": "Dry ice (solid CO₂)"
+ },
+ {
+  "term": "Valence electrons",
+  "slug": "valence-electrons",
+  "category": "Atomic Structure",
+  "definition": "Electrons in the outermost shell, involved in bonding.",
+  "example": ""
+ }
+]

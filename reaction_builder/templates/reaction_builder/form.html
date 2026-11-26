@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% block title %}{% if editing %}Edit{% else %}Build{% endif %} reaction{% endblock %}
+{% block content %}
+{% include 'includes/page_head.html' with title='Reaction Builder' ic='zap' sub='Type reactants and products. The checker updates as you type.' %}
+{% if guest_result %}
+<div class="glass p-4 mb-4 result-glow">
+  <div class="d-flex flex-wrap justify-content-between gap-2"><h2 class="h5 mb-0">Result</h2>
+    {% if guest_result.is_balanced %}<span class="badge text-bg-success">Balanced</span>{% else %}<span class="badge text-bg-warning">Not balanced</span>{% endif %}</div>
+  <div class="eq huge my-2">{{ guest_result.equation|chem }}</div>
+  {% if guest_result.suggestion %}<p class="mb-2"><b>Balancing help:</b> <span class="eq">{{ guest_result.suggestion|chem }}</span>
+    <a class="small ms-2" href="{% url 'reaction_balancer:index' %}?equation={{ guest_result.equation|urlencode }}">See step-by-step</a></p>{% endif %}
+  {% if guest_result.suggestion_error %}<p class="text-warning">{{ guest_result.suggestion_error }}</p>{% endif %}
+  <p class="mb-1"><b>Type:</b> {{ guest_type_text }}</p>
+  <p class="small mb-0">Reactant mass {{ guest_result.mass_left }} g · product mass {{ guest_result.mass_right }} g{% if guest_result.is_balanced %} – mass is conserved ✓{% endif %}</p>
+</div>
+{% endif %}
+<div class="row g-4">
+  <div class="col-lg-7"><div class="glass p-4">
+    <form method="post" novalidate id="rxForm" data-check="{% url 'reaction_builder:api_check' %}">{% csrf_token %}
+      {% include 'includes/form_errors.html' %}
+      {% include 'includes/field.html' with field=form.title %}
+      <div class="row g-2 align-items-start">
+        <div class="col-md-5">{% include 'includes/field.html' with field=form.reactants %}</div>
+        <div class="col-md-2 text-center pt-md-4 fs-3 text-cyan">→</div>
+        <div class="col-md-5">{% include 'includes/field.html' with field=form.products %}</div>
+      </div>
+      <div class="mb-3"><span class="small text-secondary me-2">Quick add:</span>
+        {% for f in quick_add %}<button type="button" class="chip chip-btn" data-add="{{ f }}">{{ f|chem }}</button>{% endfor %}
+        <div class="small text-secondary mt-1">Quick add puts the formula into the last box you clicked.</div></div>
+      <div class="row"><div class="col-md-6">{% include 'includes/field.html' with field=form.reaction_type %}</div>
+        <div class="col-md-6">{% include 'includes/field.html' with field=form.conditions %}</div></div>
+      {% include 'includes/field.html' with field=form.explanation %}
+      {% include 'includes/field.html' with field=form.is_public %}
+      {% if user.is_authenticated %}<button class="btn btn-cv">{% icon 'check' %} Save reaction</button>
+      {% else %}<button class="btn btn-cv">{% icon 'scale' %} Check &amp; explain reaction</button>
+      <p class="small text-secondary mt-2 mb-0">You are building as a guest. <a href="{% url 'accounts:login' %}?next={{ request.path }}">Sign in</a> to save reactions and share them.</p>{% endif %}
+    </form>
+  </div></div>
+  <div class="col-lg-5"><div class="glass p-4 sticky-lg-top" style="top:90px">
+    <h2 class="h6">{% icon 'scale' %} Live check</h2>
+    <div class="eq big my-2" id="rxEq">–</div>
+    <div id="rxStatus" class="mb-2 small text-secondary">Start typing to check your equation.</div>
+    <div id="rxTable"></div>
+    <div id="rxSuggest"></div>
+    <div id="rxType" class="small mt-3"></div>
+  </div></div>
+</div>
+{% endblock %}

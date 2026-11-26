@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}Interactive chemistry learning{% endblock %}
+{% block content %}
+{% if not seeded %}<div class="alert alert-warning glass">The database is empty. Run <code>python manage.py seed_data</code> to load elements, compounds, lessons and quizzes.</div>{% endif %}
+<section class="hero glass-hero">
+  <div class="row align-items-center g-5">
+    <div class="col-lg-6">
+      <div class="eyebrow">Your universe of chemistry</div>
+      <h1 class="hero-title">Learn chemistry by <span class="grad-text">exploring, building and playing.</span></h1>
+      <p class="lead text-secondary">An interactive periodic table, a compound database with melting and boiling points, a 2D structure lab, a reaction builder, games, quizzes and a safe virtual lab – all in one place.</p>
+      <form class="hero-search d-flex gap-2 my-4" action="{% url 'compound_search:search' %}" role="search">
+        <input class="form-control form-control-lg" name="q" placeholder="Search a compound – ethanol, H2SO4, NaCl…" aria-label="Search compounds">
+        <button class="btn btn-cv btn-lg px-4">{% icon 'search' %}</button>
+      </form>
+      <div class="d-flex flex-wrap gap-2">
+        {% if user.is_authenticated %}<a class="btn btn-cv btn-lg" href="{% url 'dashboard:dashboard' %}">Open my dashboard {% icon 'arrow' %}</a>
+        {% else %}<a class="btn btn-cv btn-lg" href="{% url 'accounts:register' %}">Start learning free {% icon 'arrow' %}</a>
+        <a class="btn btn-cv-outline btn-lg" href="{% url 'dashboard:dashboard' %}">Explore as guest</a>{% endif %}
+      </div>
+    </div>
+    <div class="col-lg-6">
+      <div class="hero-visual" aria-hidden="true">
+        <svg viewBox="0 0 420 360" class="w-100">
+          <defs><radialGradient id="nuc" cx="40%" cy="35%"><stop offset="0" stop-color="#a5f3fc"/><stop offset="1" stop-color="#7c3aed"/></radialGradient></defs>
+          <g class="orbit-a"><ellipse cx="210" cy="180" rx="180" ry="62" fill="none" stroke="rgba(34,211,238,.45)" stroke-width="1.5"/><circle cx="390" cy="180" r="9" fill="#22d3ee"/></g>
+          <g class="orbit-b"><ellipse cx="210" cy="180" rx="180" ry="62" fill="none" stroke="rgba(167,139,250,.45)" stroke-width="1.5" transform="rotate(60 210 180)"/></g>
+          <g class="orbit-c"><ellipse cx="210" cy="180" rx="180" ry="62" fill="none" stroke="rgba(244,114,182,.35)" stroke-width="1.5" transform="rotate(-60 210 180)"/></g>
+          <circle cx="210" cy="180" r="42" fill="url(#nuc)"/><text x="210" y="192" text-anchor="middle" font-family="Sora, Inter, sans-serif" font-size="34" font-weight="700" fill="#fff">Cv</text>
+        </svg>
+        <div class="float-card fc1"><b>H<sub>2</sub>O</b><span>bp 100 °C</span></div>
+        <div class="float-card fc2"><b>Fe</b><span>Z = 26</span></div>
+        <div class="float-card fc3"><b>2H<sub>2</sub> + O<sub>2</sub> → 2H<sub>2</sub>O</b><span>balanced ✓</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="row g-3 my-4">
+  {% for label, n in stats %}<div class="col-6 col-lg-3"><div class="glass stat-card text-center"><div class="stat-n" data-count="{{ n }}">{{ n }}</div><div class="stat-l">{{ label }}</div></div></div>{% endfor %}
+</section>
+
+<h2 class="h3 mt-5 mb-3">Thirteen tools, one platform</h2>
+<section class="row g-3">
+  {% for ic, title, text, url in tools %}
+  <div class="col-sm-6 col-lg-4 col-xl-3"><a class="glass tool-card h-100" href="{% url url %}">
+    <span class="tool-ic">{% icon ic 24 %}</span><h3 class="h6 mt-3 mb-1">{{ title }}</h3><p class="small text-secondary mb-0">{{ text }}</p></a></div>
+  {% endfor %}
+</section>
+
+<section class="glass p-4 p-lg-5 my-5 text-center cta">
+  <h2 class="h3">Track your progress as you learn</h2>
+  <p class="text-secondary">Your dashboard shows lessons completed, quiz scores, game points, saved structures and achievements.</p>
+  <a class="btn btn-cv" href="{% url 'dashboard:dashboard' %}">Get started – no sign-in needed</a>
+</section>
+{% endblock %}

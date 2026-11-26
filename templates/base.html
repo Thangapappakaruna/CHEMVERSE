@@ -1,0 +1,143 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="CHEMVERSE – interactive chemistry learning platform">
+  <title>{% block title %}Learn chemistry interactively{% endblock %} · CHEMVERSE</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/chemverse.css' %}">
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+<div class="bg-orbs" aria-hidden="true"><span></span><span></span><span></span></div>
+
+<nav class="navbar navbar-expand-xl cv-nav sticky-top">
+  <div class="container-xxl">
+    <a class="navbar-brand cv-brand" href="{% url 'dashboard:home' %}">{% icon 'atom' 26 'spin-slow' %} CHEM<span>VERSE</span></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#cvNav" aria-controls="cvNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="cvNav">
+      <ul class="navbar-nav me-auto">
+        <li class="nav-item"><a class="nav-link" href="{% url 'dashboard:home' %}">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'dashboard:dashboard' %}">Dashboard</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Learn</a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{% url 'chemistry_learning:list' %}">{% icon 'book' %} Lessons</a></li>
+            <li><a class="dropdown-item" href="{% url 'chemistry_dictionary:index' %}">{% icon 'dictionary' %} Dictionary</a></li>
+            <li><a class="dropdown-item" href="{% url 'chemistry_quiz:index' %}">{% icon 'help' %} Quiz</a></li>
+            <li><a class="dropdown-item" href="{% url 'lab_simulator:index' %}">{% icon 'beaker' %} Lab Simulator</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'periodic_table:table' %}">Periodic Table</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Compounds</a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{% url 'compound_search:search' %}">{% icon 'search' %} Compound Search</a></li>
+            <li><a class="dropdown-item" href="{% url 'boiling_melting:index' %}">{% icon 'thermo' %} Boiling &amp; Melting</a></li>
+            <li><a class="dropdown-item" href="{% url 'molecular_weight:index' %}">{% icon 'calculator' %} Molecular Weight</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'molecular_structure:editor' %}">Structure Lab</a></li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Reactions</a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{% url 'reaction_builder:list' %}">{% icon 'zap' %} Reaction Builder</a></li>
+            <li><a class="dropdown-item" href="{% url 'reaction_balancer:index' %}">{% icon 'scale' %} Equation Balancer</a></li>
+          </ul>
+        </li>
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Games</a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" href="{% url 'chemistry_games:index' %}">{% icon 'gamepad' %} All games</a></li>
+            <li><a class="dropdown-item" href="{% url 'chemistry_quiz:leaderboard' %}">{% icon 'trophy' %} Leaderboard</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'community:list' %}">Community</a></li>
+      </ul>
+      <ul class="navbar-nav align-items-xl-center">
+        {% if user.is_authenticated %}
+        <li class="nav-item dropdown">
+          <a class="nav-link dropdown-toggle d-flex align-items-center gap-2" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="avatar" style="--c: {{ user.profile.avatar_color|default:'#22d3ee' }}">{{ user.username|first|upper }}</span> Profile
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li><span class="dropdown-item-text small text-secondary">Signed in as <b>{{ user.username }}</b></span></li>
+            <li><a class="dropdown-item" href="{% url 'accounts:my_profile' %}">{% icon 'user' %} My profile</a></li>
+            <li><a class="dropdown-item" href="{% url 'accounts:saved' %}">{% icon 'bookmark' %} Saved items</a></li>
+            <li><a class="dropdown-item" href="{% url 'accounts:history' %}">{% icon 'history' %} Learning history</a></li>
+            <li><a class="dropdown-item" href="{% url 'accounts:password_change' %}">{% icon 'lock' %} Change password</a></li>
+            {% if user.is_staff %}<li><a class="dropdown-item" href="/admin/">{% icon 'dashboard' %} Admin</a></li>{% endif %}
+            <li><hr class="dropdown-divider"></li>
+            <li><form method="post" action="{% url 'accounts:logout' %}">{% csrf_token %}<button class="dropdown-item">{% icon 'logout' %} Sign out</button></form></li>
+          </ul>
+        </li>
+        {% else %}
+        <li class="nav-item"><a class="nav-link" href="{% url 'accounts:login' %}">Profile · Sign in</a></li>
+        <li class="nav-item ms-xl-2"><a class="btn btn-cv btn-sm" href="{% url 'accounts:register' %}">Create account</a></li>
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</nav>
+
+{% if not user.is_authenticated and request.resolver_match.app_name != 'accounts' %}
+<div class="verify-strip guest-strip">
+  <div class="container-xxl d-flex flex-wrap align-items-center gap-2">
+    {% icon 'sparkles' %} <span>You're exploring in <b>guest mode</b> – every tool works without signing in. Progress is kept for this visit.</span>
+    <span class="ms-auto d-flex gap-2"><a class="btn btn-sm btn-outline-light" href="{% url 'accounts:login' %}?next={{ request.path|urlencode }}">Sign in</a>
+    <a class="btn btn-sm btn-cv" href="{% url 'accounts:register' %}">Save my progress</a></span>
+  </div>
+</div>
+{% endif %}
+{% if user.is_authenticated and not EMAIL_VERIFIED %}
+<div class="verify-strip">
+  <div class="container-xxl d-flex flex-wrap align-items-center gap-2">
+    {% icon 'mail' %} <span>Please verify <b>{{ user.email }}</b> to post in the community.</span>
+    <form method="post" action="{% url 'accounts:resend_verification' %}" class="ms-auto">{% csrf_token %}
+      <input type="hidden" name="next" value="{{ request.path }}"><button class="btn btn-sm btn-outline-light">Resend link</button></form>
+  </div>
+</div>
+{% endif %}
+
+<main class="container-xxl py-4 cv-main">
+  {% if messages %}
+  <div class="toast-stack">
+    {% for m in messages %}
+    <div class="alert alert-{{ m.tags }} alert-dismissible fade show glass" role="alert">{{ m }}
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>
+    {% endfor %}
+  </div>
+  {% endif %}
+  {% block content %}{% endblock %}
+</main>
+
+<footer class="cv-footer">
+  <div class="container-xxl">
+    <div class="row g-4">
+      <div class="col-lg-4">
+        <div class="cv-brand mb-2">{% icon 'atom' 22 %} CHEM<span>VERSE</span></div>
+        <p class="text-secondary small mb-0">An interactive chemistry learning platform built with Django, SQLite3, Bootstrap 5 and Chart.js.</p>
+      </div>
+      <div class="col-6 col-lg-2"><h6>Learn</h6>
+        <a href="{% url 'chemistry_learning:list' %}">Lessons</a><a href="{% url 'chemistry_dictionary:index' %}">Dictionary</a><a href="{% url 'chemistry_quiz:index' %}">Quiz</a></div>
+      <div class="col-6 col-lg-2"><h6>Tools</h6>
+        <a href="{% url 'periodic_table:table' %}">Periodic table</a><a href="{% url 'reaction_balancer:index' %}">Balancer</a><a href="{% url 'molecular_weight:index' %}">Molecular weight</a></div>
+      <div class="col-6 col-lg-2"><h6>Play</h6>
+        <a href="{% url 'chemistry_games:index' %}">Games</a><a href="{% url 'lab_simulator:index' %}">Lab simulator</a><a href="{% url 'chemistry_quiz:leaderboard' %}">Leaderboard</a></div>
+      <div class="col-6 col-lg-2"><h6>CHEMVERSE</h6>
+        <a href="{% url 'dashboard:about' %}">About</a><a href="{% url 'dashboard:contact' %}">Contact</a><a href="{% url 'community:list' %}">Community</a></div>
+    </div>
+    <p class="small text-secondary mt-4 mb-0">Scientific values are reference data at 1 atm; approximate or unavailable values are labelled. Experiments are virtual – never repeat them without supervision.</p>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="{% static 'js/chemverse.js' %}"></script>
+{% block extra_js %}{% endblock %}
+</body>
+</html>

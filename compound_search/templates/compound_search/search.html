@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}Compound Search{% endblock %}
+{% block content %}
+<div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4">
+  <div><div class="eyebrow">Search engine</div><h1 class="h2 mb-1"><span class="head-ic">{% icon 'search' 26 %}</span>Compound Search</h1>
+    <p class="text-secondary mb-0">Search by name or formula. Temperatures in °C at 1 atm.</p></div>
+  {% if user.is_authenticated %}<a class="btn btn-cv-outline" href="{% url 'compound_search:add' %}">{% icon 'plus' %} Add compound</a>{% endif %}
+</div>
+<form class="glass p-3 mb-3 row g-2" method="get" role="search">
+  <div class="col-lg-5 position-relative"><input class="form-control" id="cSearch" name="q" value="{{ q }}" placeholder="e.g. ethanol, C2H5OH, acid" autocomplete="off" data-suggest="{% url 'compound_search:api_search' %}">
+    <div class="suggest glass" id="cSuggest" hidden></div></div>
+  <div class="col-6 col-lg-2"><select class="form-select" name="category"><option value="">All categories</option>{% for c in categories %}<option {% if c == params.category %}selected{% endif %}>{{ c }}</option>{% endfor %}</select></div>
+  <div class="col-6 col-lg-2"><select class="form-select" name="state"><option value="">Any state</option>
+    <option value="solid" {% if params.state == 'solid' %}selected{% endif %}>Solid</option>
+    <option value="liquid" {% if params.state == 'liquid' %}selected{% endif %}>Liquid</option>
+    <option value="gas" {% if params.state == 'gas' %}selected{% endif %}>Gas</option></select></div>
+  <div class="col-8 col-lg-2"><select class="form-select" name="sort">
+    <option value="name" {% if params.sort == 'name' %}selected{% endif %}>Sort: name</option>
+    <option value="mass" {% if params.sort == 'mass' %}selected{% endif %}>Molar mass ↑</option>
+    <option value="-mass" {% if params.sort == '-mass' %}selected{% endif %}>Molar mass ↓</option>
+    <option value="mp" {% if params.sort == 'mp' %}selected{% endif %}>Melting point ↑</option>
+    <option value="bp" {% if params.sort == 'bp' %}selected{% endif %}>Boiling point ↑</option>
+    <option value="-bp" {% if params.sort == '-bp' %}selected{% endif %}>Boiling point ↓</option></select></div>
+  <div class="col-4 col-lg-1 d-grid"><button class="btn btn-cv">{% icon 'search' %}</button></div>
+</form>
+<p class="small text-secondary">{{ page.paginator.count }} compound{{ page.paginator.count|pluralize }}{% if q %} for “{{ q }}”{% endif %}</p>
+<div class="glass p-0 overflow-hidden"><div class="table-responsive">
+<table class="table table-cv table-hover align-middle mb-0">
+  <thead><tr><th>Compound</th><th>Formula</th><th class="text-end">Mol. weight</th><th class="text-end">Melting</th><th class="text-end">Boiling</th><th>State</th><th></th></tr></thead>
+  <tbody>
+  {% for c in page %}
+  <tr>
+    <td><a href="{% url 'compound_search:detail' c.pk %}" class="fw-semibold">{{ c.name }}</a> {% include 'compound_search/_quality.html' %}<div class="small text-secondary">{{ c.category }}</div></td>
+    <td class="mono">{{ c.formula|chem }}</td>
+    <td class="text-end">{{ c.molar_mass|default_if_none:'–' }}</td>
+    <td class="text-end">{% if c.melting_point is not None %}{{ c.melting_point }} °C{% else %}<span class="text-secondary" title="{{ c.mp_note }}">{{ c.mp_note|default:'n/a'|truncatechars:18 }}</span>{% endif %}</td>
+    <td class="text-end">{% if c.boiling_point is not None %}{{ c.boiling_point }} °C{% else %}<span class="text-secondary" title="{{ c.bp_note }}">{{ c.bp_note|default:'n/a'|truncatechars:18 }}</span>{% endif %}</td>
+    <td><span class="state state-{{ c.state }}">{{ c.get_state_display }}</span></td>
+    <td class="text-end">{% if user.is_authenticated %}<form method="post" action="{% url 'compound_search:favorite' c.pk %}" class="fav-form">{% csrf_token %}<input type="hidden" name="next" value="{{ request.get_full_path }}">
+      <button class="btn btn-sm btn-fav {% if c.pk in favs %}on{% endif %}" title="Favourite">{% icon 'star' 16 %}</button></form>{% endif %}</td>
+  </tr>
+  {% empty %}<tr><td colspan="7" class="text-center text-secondary p-4">No compounds found. Try another name or formula.</td></tr>{% endfor %}
+  </tbody>
+</table></div></div>
+{% include 'includes/pagination.html' %}
+{% endblock %}

@@ -1,0 +1,122 @@
+[
+ {
+  "slug": "atoms",
+  "title": "What is an Atom?",
+  "level": "Beginner",
+  "summary": "Protons, neutrons, electrons and the nucleus.",
+  "content": "<p>Everything around you is made of <b>atoms</b>. An atom has a tiny, dense <b>nucleus</b> containing positively charged <b>protons</b> and neutral <b>neutrons</b>. Negatively charged <b>electrons</b> move around the nucleus in shells.</p><ul><li><b>Atomic number (Z)</b> = number of protons</li><li><b>Mass number (A)</b> = protons + neutrons</li><li>A neutral atom has equal protons and electrons</li></ul><p>Example: Carbon-12 has 6 protons, 6 neutrons and 6 electrons.</p>",
+  "category": "Atomic Structure",
+  "order": 1,
+  "reading_minutes": 4
+ },
+ {
+  "slug": "periodic-table",
+  "title": "Reading the Periodic Table",
+  "level": "Beginner",
+  "summary": "Groups, periods and element families.",
+  "content": "<p>The periodic table arranges elements by increasing atomic number. Vertical columns are <b>groups</b> (1–18) and horizontal rows are <b>periods</b> (1–7).</p><ul><li>Group 1: alkali metals — very reactive</li><li>Group 17: halogens — reactive non-metals</li><li>Group 18: noble gases — very unreactive</li></ul><p>Elements in the same group have the same number of valence electrons, so they behave similarly.</p>",
+  "category": "Periodic Table",
+  "order": 2,
+  "reading_minutes": 4
+ },
+ {
+  "slug": "electron-configuration",
+  "title": "Electron Configuration",
+  "level": "Beginner",
+  "summary": "How electrons fill shells and subshells.",
+  "content": "<p>Electrons fill orbitals in order of increasing energy (the <b>Aufbau principle</b>): 1s, 2s, 2p, 3s, 3p, 4s, 3d, 4p …</p><p>Each s subshell holds 2 electrons, p holds 6, d holds 10 and f holds 14.</p><p>Example: Sodium (Z = 11) → 1s² 2s² 2p⁶ 3s¹. The single 3s electron makes sodium very reactive.</p>",
+  "category": "Atomic Structure",
+  "order": 3,
+  "reading_minutes": 4
+ },
+ {
+  "slug": "bonding",
+  "title": "Chemical Bonding",
+  "level": "Intermediate",
+  "summary": "Ionic, covalent and metallic bonds.",
+  "content": "<p>Atoms bond to reach a stable electron arrangement.</p><ul><li><b>Ionic bond</b>: electrons are transferred (e.g. Na⁺Cl⁻)</li><li><b>Covalent bond</b>: electrons are shared (e.g. H–H, O=O)</li><li><b>Metallic bond</b>: a sea of delocalised electrons around metal ions</li></ul><p>Try drawing H<sub>2</sub>O and CO<sub>2</sub> in the Structure Drawer to see single and double bonds.</p>",
+  "category": "Bonding",
+  "order": 4,
+  "reading_minutes": 4
+ },
+ {
+  "slug": "mole-concept",
+  "title": "The Mole Concept",
+  "level": "Intermediate",
+  "summary": "Avogadro's number and molar mass.",
+  "content": "<p>One <b>mole</b> contains 6.022 × 10²³ particles (Avogadro's number).</p><p><b>Molar mass</b> is the mass of one mole in grams: add up atomic masses. H<sub>2</sub>O = 2 × 1.008 + 15.999 = 18.015 g/mol.</p><p>moles = mass ÷ molar mass. Use the Molar Mass Calculator to practise.</p>",
+  "category": "Stoichiometry",
+  "order": 5,
+  "reading_minutes": 4
+ },
+ {
+  "slug": "balancing-equations",
+  "title": "Balancing Equations",
+  "level": "Intermediate",
+  "summary": "Law of conservation of mass in action.",
+  "content": "<p>Atoms are neither created nor destroyed in a reaction, so both sides must contain the same number of each atom.</p><p>Unbalanced: H<sub>2</sub> + O<sub>2</sub> → H<sub>2</sub>O<br>Balanced: 2H<sub>2</sub> + O<sub>2</sub> → 2H<sub>2</sub>O</p><p>Only change <b>coefficients</b>, never subscripts. Check your answers with the Equation Balancer.</p>",
+  "category": "Reactions",
+  "order": 6,
+  "reading_minutes": 4
+ },
+ {
+  "slug": "states-of-matter",
+  "title": "Melting & Boiling Points",
+  "level": "Beginner",
+  "summary": "Why substances melt and boil at different temperatures.",
+  "content": "<p>The <b>melting point</b> is where a solid becomes liquid; the <b>boiling point</b> is where a liquid becomes gas.</p><p>Stronger forces between particles mean higher melting and boiling points. Ionic NaCl melts at 801 °C, while methane (weak forces) boils at −161.5 °C.</p><p>Hydrogen bonding gives water an unusually high boiling point for its size.</p>",
+  "category": "Physical Chemistry",
+  "order": 7,
+  "reading_minutes": 4
+ },
+ {
+  "slug": "acids-bases",
+  "title": "Acids and Bases",
+  "level": "Intermediate",
+  "summary": "pH scale, indicators and neutralisation.",
+  "content": "<p><b>Acids</b> release H⁺ ions in water; <b>bases</b> release OH⁻ ions.</p><ul><li>pH &lt; 7: acidic</li><li>pH = 7: neutral</li><li>pH &gt; 7: basic</li></ul><p>Neutralisation: HCl + NaOH → NaCl + H<sub>2</sub>O.</p>",
+  "category": "Acids & Bases",
+  "order": 8,
+  "reading_minutes": 4
+ },
+ {
+  "slug": "reaction-types",
+  "title": "Types of Chemical Reactions",
+  "level": "Beginner",
+  "category": "Reactions",
+  "summary": "Synthesis, decomposition, displacement and combustion.",
+  "content": "<p>Most reactions you meet at school fit a few patterns:</p><ul><li><b>Synthesis</b>: A + B → AB (2H<sub>2</sub> + O<sub>2</sub> → 2H<sub>2</sub>O)</li><li><b>Decomposition</b>: AB → A + B (CaCO<sub>3</sub> → CaO + CO<sub>2</sub>)</li><li><b>Single displacement</b>: A + BC → AC + B (Zn + 2HCl → ZnCl<sub>2</sub> + H<sub>2</sub>)</li><li><b>Double displacement</b>: AB + CD → AD + CB (AgNO<sub>3</sub> + NaCl → AgCl + NaNO<sub>3</sub>)</li><li><b>Combustion</b>: fuel + O<sub>2</sub> → CO<sub>2</sub> + H<sub>2</sub>O</li></ul><p>Try building each one in the Reaction Builder.</p>",
+  "order": 9,
+  "reading_minutes": 4
+ },
+ {
+  "slug": "organic-basics",
+  "title": "Organic Chemistry Basics",
+  "level": "Intermediate",
+  "category": "Organic Chemistry",
+  "summary": "Hydrocarbons, functional groups and naming.",
+  "content": "<p>Organic chemistry is the chemistry of carbon compounds. Carbon forms four bonds and can make chains and rings.</p><ul><li><b>Alkanes</b> (single bonds): methane CH<sub>4</sub>, ethane C<sub>2</sub>H<sub>6</sub></li><li><b>Alkenes</b> (C=C): ethene C<sub>2</sub>H<sub>4</sub></li><li><b>Alkynes</b> (C≡C): ethyne C<sub>2</sub>H<sub>2</sub></li></ul><p>A <b>functional group</b> decides how a molecule reacts: –OH (alcohols), –COOH (carboxylic acids), C=O (aldehydes and ketones), –NH<sub>2</sub> (amines).</p><p>Draw ethanol in the Structure Lab and find its –OH group.</p>",
+  "order": 10,
+  "reading_minutes": 4
+ },
+ {
+  "slug": "gas-laws",
+  "title": "The Gas Laws",
+  "level": "Intermediate",
+  "category": "Physical Chemistry",
+  "summary": "Boyle, Charles and the ideal gas equation.",
+  "content": "<p>Gases are described by pressure (P), volume (V), temperature (T, in kelvin) and amount (n).</p><ul><li><b>Boyle's law</b>: at constant T, PV = constant</li><li><b>Charles's law</b>: at constant P, V/T = constant</li><li><b>Ideal gas law</b>: PV = nRT, with R = 0.08206 L·atm·mol⁻¹·K⁻¹</li></ul><p>Explore these in the Gas Laws experiment of the Lab Simulator.</p>",
+  "order": 11,
+  "reading_minutes": 4
+ },
+ {
+  "slug": "lab-safety",
+  "title": "Laboratory Safety",
+  "level": "Beginner",
+  "category": "Lab Skills",
+  "summary": "Rules that keep every chemist safe.",
+  "content": "<ul><li>Always wear safety goggles and a lab coat.</li><li>Never taste chemicals or smell them directly – waft vapours towards you.</li><li>Add acid to water, never water to acid.</li><li>Know where the eyewash, shower and fire extinguisher are.</li><li>Read hazard symbols and the Safety Data Sheet before using a chemical.</li><li>Dispose of chemicals as your teacher instructs.</li></ul><p>CHEMVERSE experiments are virtual – do not repeat them at home.</p>",
+  "order": 12,
+  "reading_minutes": 4
+ }
+]

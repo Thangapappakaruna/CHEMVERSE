@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}{{ owner.username }}{% endblock %}
+{% block content %}
+<div class="glass p-4 mb-4 d-flex flex-wrap gap-4 align-items-center">
+  <span class="avatar avatar-xl" style="--c: {{ prof.avatar_color }}">{{ owner.username|first|upper }}</span>
+  <div class="flex-grow-1">
+    <h1 class="h3 mb-0">{{ prof.display_name }}</h1>
+    <div class="text-secondary">@{{ owner.username }}{% if prof.institution %} · {{ prof.institution }}{% endif %} · joined {{ owner.date_joined|date:"M Y" }}</div>
+    {% if prof.bio %}<p class="mt-2 mb-1">{{ prof.bio }}</p>{% endif %}
+    <div class="d-flex align-items-center gap-3 mt-2">
+      <span class="badge text-bg-cv">Level {{ prof.level }}</span><span class="small text-secondary">{{ prof.xp }} XP</span>
+      <div class="progress flex-grow-1" style="max-width:260px;height:8px"><div class="progress-bar bg-cv" style="width: {{ prof.level_progress }}%"></div></div>
+      {% if prof.email_verified %}<span class="badge text-bg-success">{% icon 'check' 14 %} Email verified</span>{% elif is_me %}<span class="badge text-bg-warning">Email not verified</span>{% endif %}
+    </div>
+  </div>
+  {% if is_me %}<div class="d-flex gap-2"><a class="btn btn-cv-outline" href="{% url 'accounts:profile_edit' %}">{% icon 'edit' %} Edit profile</a>
+    <a class="btn btn-cv-outline" href="{% url 'accounts:history' %}">{% icon 'history' %} History</a></div>{% endif %}
+</div>
+<div class="row g-3 mb-4">
+  {% for label, n in stats.items %}<div class="col-6 col-md-4 col-lg-2"><div class="glass stat-card"><div class="stat-n">{{ n }}</div><div class="stat-l">{{ label|capfirst }}</div></div></div>{% endfor %}
+</div>
+<div class="glass p-4 mb-4">
+  <h2 class="h5 mb-3">{% icon 'trophy' %} Achievements</h2>
+  <div class="row g-3">{% for b in badges %}<div class="col-6 col-md-4 col-xl-2"><div class="badge-card {% if b.earned %}earned{% endif %}">{% icon b.icon 26 %}<b>{{ b.title }}</b><small>{{ b.desc }}</small></div></div>{% endfor %}</div>
+</div>
+<div class="row g-4">
+  <div class="col-md-6"><div class="glass p-4 h-100"><h2 class="h5">Shared structures</h2>
+    {% for s in public_structures %}<a class="chip" href="{% url 'molecular_structure:editor' %}?id={{ s.id }}">{{ s.name }} · {{ s.formula|chem }}</a>{% empty %}<p class="text-secondary mb-0">Nothing shared yet.</p>{% endfor %}</div></div>
+  <div class="col-md-6"><div class="glass p-4 h-100"><h2 class="h5">Shared reactions</h2>
+    {% for r in public_reactions %}<a class="chip" href="{% url 'reaction_builder:detail' r.pk %}">{{ r.title }}</a>{% empty %}<p class="text-secondary mb-0">Nothing shared yet.</p>{% endfor %}</div></div>
+</div>
+{% endblock %}

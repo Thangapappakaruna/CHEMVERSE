@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %}Sign in{% endblock %}
+{% block content %}
+<div class="auth-wrap">
+  <div class="glass auth-card">
+    <div class="auth-ic">{% icon 'lock' 30 %}</div>
+    <h1 class="h3 text-center mb-1">Welcome back</h1>
+    <p class="text-secondary text-center mb-4">Sign in with your User ID or email.</p>
+
+    <form method="post" novalidate>{% csrf_token %}
+      {% include 'includes/form_errors.html' %}
+      {% for field in form %}{% include 'includes/field.html' %}{% endfor %}
+      <input type="hidden" name="next" value="{{ next }}">
+      <button class="btn btn-cv w-100 py-2">Sign in</button>
+    </form>
+    <div class="d-flex justify-content-between mt-3 small">
+      <a href="{% url 'accounts:password_reset' %}">Forgot password?</a>
+      <a href="{% url 'accounts:register' %}">Create an account</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,7 @@
+<div class="page-head d-flex flex-wrap align-items-end justify-content-between gap-3 mb-4">
+  <div>
+    {% if eyebrow %}<div class="eyebrow">{{ eyebrow }}</div>{% endif %}
+    <h1 class="h2 mb-1">{% if ic %}<span class="head-ic">{% icon ic 26 %}</span>{% endif %}{{ title }}</h1>
+    {% if sub %}<p class="text-secondary mb-0">{{ sub }}</p>{% endif %}
+  </div>
+</div>

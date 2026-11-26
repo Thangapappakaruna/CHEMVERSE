@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Chemistry Games{% endblock %}
+{% block content %}
+<div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4">
+  <div><div class="eyebrow">Play &amp; learn</div><h1 class="h2 mb-1"><span class="head-ic">{% icon 'gamepad' 26 %}</span>Chemistry Games</h1>
+    <p class="text-secondary mb-0">Seven games – play freely, no sign-in needed. Sign in to keep your scores, earn XP and appear on the leaderboard.</p></div>
+  <div class="glass px-4 py-2 text-center"><div class="stat-n">{{ total }}</div><div class="stat-l">{% if user.is_authenticated %}your total points{% else %}guest points this visit{% endif %}</div></div>
+</div>
+<div class="row g-3">
+  {% for g in games %}
+  <div class="col-sm-6 col-lg-4"><a class="glass game-card h-100" href="{% url 'chemistry_games:play' g.slug %}">
+    <span class="tool-ic big">{% icon g.icon 30 %}</span>
+    <h2 class="h5 mt-3 mb-1">{{ g.title }}</h2><p class="small text-secondary">{{ g.description }}</p>
+    <div class="d-flex justify-content-between align-items-center mt-auto"><span class="btn btn-sm btn-cv">Play</span>
+      {% if g.best is not None %}<span class="small">Best: <b>{{ g.best }}</b></span>{% endif %}</div>
+  </a></div>
+  {% empty %}<p class="text-secondary">No games loaded. Run <code>python manage.py seed_data</code>.</p>{% endfor %}
+</div>
+<div class="text-center mt-4"><a class="btn btn-cv-outline" href="{% url 'chemistry_quiz:leaderboard' %}?board=games">{% icon 'trophy' %} Games leaderboard</a></div>
+{% endblock %}

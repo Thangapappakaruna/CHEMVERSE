@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}{{ post.title }}{% endblock %}
+{% block content %}
+<nav aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="{% url 'community:list' %}">Community</a></li><li class="breadcrumb-item active text-truncate">{{ post.title }}</li></ol></nav>
+<article class="glass p-4 mb-4">
+  <div class="d-flex gap-3 align-items-center mb-2"><span class="avatar" style="--c: {{ post.author.profile.avatar_color|default:'#22d3ee' }}">{{ post.author.username|first|upper }}</span>
+    <div><a href="{% url 'accounts:profile' post.author.username %}" class="fw-semibold">{{ post.author.username }}</a><div class="small text-secondary">{{ post.created_at|date:"d M Y, H:i" }}{% if post.updated_at|date:"U" != post.created_at|date:"U" %} · edited{% endif %}</div></div>
+    <span class="badge text-bg-dark ms-auto">{{ post.get_category_display }}</span></div>
+  <h1 class="h3">{{ post.title }}</h1>
+  <div class="post-body">{{ post.body|linebreaks }}</div>
+  {% if post.shared_reaction %}<a class="glass d-block p-3 my-3" href="{% url 'reaction_builder:detail' post.shared_reaction.pk %}"><span class="eyebrow">Shared reaction</span><div class="fw-semibold">{{ post.shared_reaction.title }}</div><div class="eq">{{ post.shared_reaction.equation|chem }}</div></a>{% endif %}
+  <div class="d-flex flex-wrap gap-2 mt-3">
+    {% if user.is_authenticated %}<form method="post" action="{% url 'community:like' post.pk %}">{% csrf_token %}<button class="btn btn-sm {% if liked %}btn-cv{% else %}btn-cv-outline{% endif %}">{% icon 'heart' 14 %} {{ post.likes.count }}</button></form>{% else %}<span class="small text-secondary">{% icon 'heart' 14 %} {{ post.likes.count }}</span>{% endif %}
+    {% if user == post.author %}<a class="btn btn-sm btn-cv-outline" href="{% url 'community:edit' post.pk %}">{% icon 'edit' 14 %} Edit</a>{% endif %}
+    {% if user == post.author or user.is_staff %}<form method="post" action="{% url 'community:delete' post.pk %}" data-confirm="Delete this post and its replies?">{% csrf_token %}<button class="btn btn-sm btn-outline-danger">{% icon 'trash' 14 %} Delete</button></form>{% endif %}
+  </div>
+</article>
+<h2 class="h5 mb-3">{{ comments|length }} repl{{ comments|length|pluralize:"y,ies" }}</h2>
+{% for c in comments %}
+<div class="glass p-3 mb-2" id="c{{ c.pk }}"><div class="d-flex justify-content-between"><div class="small"><b>{{ c.author.username }}</b> <span class="text-secondary">· {{ c.created_at|timesince }} ago</span></div>
+  {% if user == c.author or user.is_staff %}<form method="post" action="{% url 'community:delete_comment' c.pk %}" data-confirm="Delete this reply?">{% csrf_token %}<button class="btn btn-sm btn-link text-danger p-0">{% icon 'trash' 14 %}</button></form>{% endif %}</div>
+  <div class="mt-1">{{ c.body|linebreaksbr }}</div></div>
+{% endfor %}
+<div class="glass p-4 mt-3">
+  {% if user.is_authenticated %}{% if EMAIL_VERIFIED %}
+  <form method="post" novalidate>{% csrf_token %}{% for field in form %}{% include 'includes/field.html' %}{% endfor %}<button class="btn btn-cv">{% icon 'message' %} Reply</button></form>
+  {% else %}<p class="mb-0 text-warning">Verify your email address to reply.</p>{% endif %}
+  {% else %}<p class="mb-0"><a href="{% url 'accounts:login' %}?next={{ request.path }}">Sign in</a> to join the discussion.</p>{% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}{{ term.term }}{% endblock %}
+{% block content %}
+<nav aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="{% url 'chemistry_dictionary:index' %}">Dictionary</a></li><li class="breadcrumb-item active">{{ term.term }}</li></ol></nav>
+<div class="glass p-4 p-lg-5 mb-4" style="max-width:860px">
+  <span class="eyebrow">{{ term.category }}</span>
+  <h1 class="h2">{{ term.term }}</h1>
+  <p class="lead">{{ term.definition }}</p>
+  {% if term.example %}<div class="example-box"><b>Example:</b> {{ term.example }}</div>{% endif %}
+</div>
+{% if related %}<h2 class="h6">More in {{ term.category }}</h2>{% for r in related %}<a class="chip" href="{% url 'chemistry_dictionary:detail' r.slug %}">{{ r.term }}</a>{% endfor %}{% endif %}
+{% endblock %}

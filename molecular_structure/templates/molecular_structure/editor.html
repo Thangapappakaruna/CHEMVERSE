@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %}Structure Lab{% endblock %}
+{% block content %}
+<div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-3">
+  <div><div class="eyebrow">2D molecule editor</div><h1 class="h2 mb-1"><span class="head-ic">{% icon 'hexagon' 26 %}</span>Structure Lab</h1>
+    <p class="text-secondary mb-0">Click to place an atom · drag from an atom to bond · click a bond to change single/double/triple · Move mode to drag atoms.</p></div>
+  <a class="btn btn-cv-outline" href="{% url 'molecular_structure:gallery' %}">{% icon 'list' %} Gallery</a>
+</div>
+<div class="row g-3">
+  <div class="col-lg-3">
+    <div class="glass p-3 tools-panel">
+      <div class="tool-label">Element</div>
+      <div class="palette">{% for el in palette %}<button type="button" class="pal{% if forloop.first %} active{% endif %}" data-el="{{ el }}">{{ el }}</button>{% endfor %}</div>
+      <div class="tool-label">Bond for new links</div>
+      <div class="btn-group w-100 mb-2" role="group">
+        <button type="button" class="btn btn-sm btn-cv-outline bond-btn active" data-order="1">Single</button>
+        <button type="button" class="btn btn-sm btn-cv-outline bond-btn" data-order="2">Double</button>
+        <button type="button" class="btn btn-sm btn-cv-outline bond-btn" data-order="3">Triple</button></div>
+      <div class="tool-label">Mode</div>
+      <div class="btn-group w-100 mb-2" role="group">
+        <button type="button" class="btn btn-sm btn-cv-outline mode-btn active" data-mode="draw">Draw</button>
+        <button type="button" class="btn btn-sm btn-cv-outline mode-btn" data-mode="move">Move</button>
+        <button type="button" class="btn btn-sm btn-cv-outline mode-btn" data-mode="erase">Erase</button></div>
+      <div class="tool-label">Templates</div>
+      <div class="palette">
+        <button type="button" class="tpl" data-tpl="water">H₂O</button><button type="button" class="tpl" data-tpl="methane">CH₄</button>
+        <button type="button" class="tpl" data-tpl="ethanol">Ethanol</button><button type="button" class="tpl" data-tpl="co2">CO₂</button>
+        <button type="button" class="tpl" data-tpl="ethyne">C₂H₂</button><button type="button" class="tpl" data-tpl="benzene">Benzene</button></div>
+      <div class="d-grid gap-2 mt-3">
+        <button type="button" class="btn btn-sm btn-cv-outline" id="autoH">Fill hydrogens</button>
+        <button type="button" class="btn btn-sm btn-cv-outline" id="undoBtn">Undo</button>
+        <button type="button" class="btn btn-sm btn-outline-danger" id="clearBtn">Clear canvas</button></div>
+    </div>
+  </div>
+  <div class="col-lg-9">
+    <div class="glass p-2"><canvas id="molCanvas" width="960" height="580" aria-label="Molecule drawing canvas"></canvas>
+      <div class="d-flex flex-wrap gap-4 px-2 pt-2 small"><span>Formula: <b id="formulaOut" class="mono">–</b></span><span>Molecular weight: <b id="massOut">–</b></span><span>Atoms: <b id="atomCount">0</b></span><span id="valenceWarn" class="text-warning"></span></div></div>
+    <div class="glass p-3 mt-3 d-flex flex-wrap gap-2 align-items-center">
+      <input class="form-control" id="structName" placeholder="Molecule name" maxlength="80" value="{{ struct.name|default:'' }}" style="max-width:280px">
+      <div class="form-check"><input class="form-check-input" type="checkbox" id="structPublic" {% if struct.is_public %}checked{% endif %}><label class="form-check-label" for="structPublic">Share publicly</label></div>
+      {% if user.is_authenticated %}<button type="button" class="btn btn-cv" id="saveBtn">{% icon 'bookmark' %} Save to my account</button>
+      {% else %}<a class="btn btn-cv" href="{% url 'accounts:login' %}?next={{ request.get_full_path|urlencode }}">Sign in to save</a>{% endif %}
+      <button type="button" class="btn btn-cv-outline" id="pngBtn">{% icon 'download' %} Export PNG</button>
+      {% if struct and not own %}<span class="small text-secondary">Viewing {{ struct.user.username }}'s structure – saving creates your own copy.</span>{% endif %}
+    </div>
+  </div>
+</div>
+{{ initial|json_script:"initial-structure" }}
+{{ valence|json_script:"valence-data" }}
+{{ masses|json_script:"mass-data" }}
+<script>window.STRUCT = {id: {% if own %}{{ struct.id }}{% else %}null{% endif %}, saveUrl: "{% url 'molecular_structure:save' %}"};</script>
+{% endblock %}
+{% block extra_js %}{% load static %}<script src="{% static 'js/structure.js' %}"></script>{% endblock %}

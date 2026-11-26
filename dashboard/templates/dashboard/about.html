@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% block title %}About{% endblock %}
+{% block content %}
+{% include 'includes/page_head.html' with title='About CHEMVERSE' ic='info' eyebrow='Our mission' %}
+<div class="row g-4">
+  <div class="col-lg-7"><div class="glass p-4 h-100 prose">
+    <p class="lead">CHEMVERSE turns chemistry into something you can explore with your hands: click elements, search compounds, draw molecules, build reactions and run safe virtual experiments.</p>
+    <h2 class="h5">How it is built</h2>
+    <p>Python and Django (MVT architecture), SQLite3, HTML5, CSS3, JavaScript, Bootstrap 5, Chart.js and JSON APIs – organised into 15 Django apps.</p>
+    <h2 class="h5">About the data</h2>
+    <p>Melting and boiling points are reference values at 1 atm in °C. Values marked <span class="badge text-bg-warning">Approximate</span> vary between sources; substances that decompose or sublime are labelled instead of being given an invented value; masses in [brackets] are mass numbers of the most stable isotope. Safety notes are summaries – always read the official Safety Data Sheet.</p>
+  </div></div>
+  <div class="col-lg-5"><div class="glass p-4 h-100"><h2 class="h5">The 15 apps</h2>
+    <ol class="small mb-0">
+      <li>accounts</li><li>dashboard</li><li>chemistry_learning</li><li>periodic_table</li><li>compound_search</li><li>boiling_melting</li><li>molecular_structure</li><li>reaction_builder</li><li>reaction_balancer</li><li>chemistry_games</li><li>chemistry_quiz</li><li>molecular_weight</li><li>lab_simulator</li><li>chemistry_dictionary</li><li>community</li>
+    </ol></div></div>
+</div>
+{% endblock %}

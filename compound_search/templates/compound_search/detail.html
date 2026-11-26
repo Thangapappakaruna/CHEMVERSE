@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block title %}{{ c.name }}{% endblock %}
+{% block content %}
+<nav aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="{% url 'compound_search:search' %}">Compounds</a></li><li class="breadcrumb-item active">{{ c.name }}</li></ol></nav>
+<div class="row g-4">
+  <div class="col-lg-7"><div class="glass p-4 h-100">
+    <div class="d-flex justify-content-between align-items-start gap-2">
+      <div><div class="eyebrow">{{ c.category }}</div><h1 class="h2 mb-0">{{ c.name }}</h1></div>
+      {% if user.is_authenticated %}<form method="post" action="{% url 'compound_search:favorite' c.pk %}" class="fav-form">{% csrf_token %}
+        <button class="btn btn-fav big {% if is_fav %}on{% endif %}">{% icon 'star' 18 %} <span>{% if is_fav %}Saved{% else %}Save{% endif %}</span></button></form>{% endif %}
+    </div>
+    <div class="formula-xl my-3">{{ c.formula|chem }}</div>
+    <table class="table table-cv mb-3">
+      <tr><th>Molecular formula</th><td class="mono">{{ c.formula|chem }}</td></tr>
+      <tr><th>Molecular weight</th><td>{{ c.molar_mass|default_if_none:'–' }} g/mol <span class="small text-secondary">(calculated)</span></td></tr>
+      <tr><th>Melting point</th><td>{{ c.melting_point|temp }}{% if c.mp_note %}<div class="small text-warning">{{ c.mp_note }}</div>{% endif %}</td></tr>
+      <tr><th>Boiling point</th><td>{{ c.boiling_point|temp }}{% if c.bp_note %}<div class="small text-warning">{{ c.bp_note }}</div>{% endif %}</td></tr>
+      <tr><th>State at 25 °C</th><td><span class="state state-{{ c.state }}">{{ c.get_state_display }}</span></td></tr>
+      <tr><th>Data quality</th><td>{{ c.get_data_quality_display }} {% include 'compound_search/_quality.html' %}</td></tr>
+      {% for p in props %}<tr><th>{{ p.name }}</th><td>{{ p.value }}{% if p.note %} <span class="small text-secondary">({{ p.note }})</span>{% endif %}</td></tr>{% endfor %}
+    </table>
+    {% if c.description %}<p>{{ c.description }}</p>{% endif %}
+    {% if c.chemical_properties %}<h2 class="h6 mt-3">Chemical properties</h2><p>{{ c.chemical_properties }}</p>{% endif %}
+  </div></div>
+  <div class="col-lg-5 d-flex flex-column gap-4">
+    <div class="glass p-4 safety-card"><h2 class="h6">{% icon 'alert' %} Safety information</h2><p class="mb-0">{{ c.safety|default:'No safety summary available. Consult the official Safety Data Sheet (SDS).' }}</p></div>
+    <div class="glass p-4"><h2 class="h6">{% icon 'thermo' %} State at a temperature</h2>
+      <div id="thermo" data-mp="{{ c.melting_point|default_if_none:'' }}" data-bp="{{ c.boiling_point|default_if_none:'' }}">
+        <input type="range" class="form-range" min="-273" max="1500" value="25" id="tempRange" aria-label="Temperature">
+        <div class="d-flex justify-content-between"><b id="tempVal">25 °C</b><span id="tempState" class="state">–</span></div>
+        <div class="particles" id="particles"></div>
+        <p class="small text-secondary mb-0">Based on the melting and boiling points at 1 atm.</p>
+      </div></div>
+    {% if comp %}<div class="glass p-4"><h2 class="h6">{% icon 'calculator' %} Composition by mass</h2>
+      {% for r in comp.rows %}<div class="d-flex justify-content-between small"><span>{{ r.element }} × {{ r.count }}</span><span>{{ r.percent }}%</span></div>
+      <div class="progress mb-2" style="height:6px"><div class="progress-bar bg-cv" style="width: {{ r.percent }}%"></div></div>{% endfor %}
+      <a class="small" href="{% url 'molecular_weight:index' %}?formula={{ c.formula|urlencode }}">Open in Molecular Weight calculator →</a></div>{% endif %}
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}Reaction Builder{% endblock %}
+{% block content %}
+<div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-3">
+  <div><div class="eyebrow">Reaction builder</div><h1 class="h2 mb-1"><span class="head-ic">{% icon 'zap' 26 %}</span>Chemical Reactions</h1>
+    <p class="text-secondary mb-0">Safe, theoretical examples and reactions built by learners. Create your own and get balancing help.</p></div>
+  <a class="btn btn-cv" href="{% url 'reaction_builder:create' %}">{% icon 'plus' %} New reaction</a>
+</div>
+<form class="glass p-3 mb-3 row g-2" method="get">
+  <div class="col-md-5"><input class="form-control" name="q" value="{{ q }}" placeholder="Search title or equation"></div>
+  <div class="col-6 col-md-3"><select class="form-select" name="type"><option value="">All types</option>{% for v, l in types %}<option value="{{ v }}" {% if v == rtype %}selected{% endif %}>{{ l }}</option>{% endfor %}</select></div>
+  <div class="col-6 col-md-2"><select class="form-select" name="show"><option value="">Everything</option><option value="samples" {% if show == 'samples' %}selected{% endif %}>Sample reactions</option>{% if user.is_authenticated %}<option value="mine" {% if show == 'mine' %}selected{% endif %}>Mine</option>{% endif %}</select></div>
+  <div class="col-md-2 d-grid"><button class="btn btn-cv">Filter</button></div>
+</form>
+<div class="row g-3">
+  {% for r in reactions %}
+  <div class="col-md-6 col-xl-4"><a class="glass reaction-card h-100" href="{% url 'reaction_builder:detail' r.pk %}">
+    <div class="d-flex justify-content-between"><span class="eyebrow">{{ r.get_reaction_type_display }}</span>
+      {% if r.is_sample %}<span class="badge text-bg-cv">Sample</span>{% endif %}</div>
+    <h2 class="h6 mt-2">{{ r.title }}</h2>
+    <div class="eq">{{ r.equation|chem }}</div>
+    <div class="small mt-2">{% if r.is_balanced %}<span class="text-success">{% icon 'check' 14 %} Balanced</span>{% else %}<span class="text-warning">{% icon 'alert' 14 %} Not balanced</span>{% endif %}
+      <span class="text-secondary">· {% if r.user %}by {{ r.user.username }}{% else %}CHEMVERSE{% endif %}</span></div>
+  </a></div>
+  {% empty %}<p class="text-secondary">No reactions found.</p>{% endfor %}
+</div>
+{% endblock %}

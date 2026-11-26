@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Edit profile{% endblock %}
+{% block content %}
+<div class="row justify-content-center"><div class="col-lg-7">
+<div class="glass p-4">
+  <h1 class="h3 mb-4">Edit profile</h1>
+  <form method="post" novalidate>{% csrf_token %}
+    {% include 'includes/form_errors.html' with form=pform %}
+    {% for field in pform %}{% include 'includes/field.html' %}{% endfor %}
+    {% for field in eform %}{% include 'includes/field.html' %}{% endfor %}
+    <p class="small text-secondary">Changing your email requires verifying the new address.</p>
+    <div class="d-flex gap-2"><button class="btn btn-cv">Save changes</button><a class="btn btn-cv-outline" href="{% url 'accounts:my_profile' %}">Cancel</a></div>
+  </form>
+  <hr class="my-4">
+  <div class="d-flex flex-wrap gap-2 align-items-center">
+    <span>Email status:</span>{% if prof.email_verified %}<span class="badge text-bg-success">Verified</span>{% else %}<span class="badge text-bg-warning">Not verified</span>
+    <form method="post" action="{% url 'accounts:resend_verification' %}">{% csrf_token %}<button class="btn btn-sm btn-cv-outline">Resend verification email</button></form>{% endif %}
+    <a class="ms-auto" href="{% url 'accounts:password_change' %}">Change password</a>
+  </div>
+</div></div></div>
+{% endblock %}
