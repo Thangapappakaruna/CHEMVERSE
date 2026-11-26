@@ -13,20 +13,22 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'dev-only-insecure-key-change-m
 DEBUG = os.environ.get('DJANGO_DEBUG', '1') == '1'
 ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '127.0.0.1,localhost').split(',')
 if DEBUG:
-    ALLOWED_HOSTS += ['*']
+    ALLOWED_HOSTS += ["localhost", "127.0.0.1", "<username>.pythonanywhere.com"]
 # Render sets this automatically to the service's *.onrender.com hostname.
 RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 CSRF_TRUSTED_ORIGINS = [o for o in os.environ.get('DJANGO_CSRF_TRUSTED_ORIGINS', '').split(',') if o]
 if RENDER_EXTERNAL_HOSTNAME:
-    CSRF_TRUSTED_ORIGINS.append(f'https://{RENDER_EXTERNAL_HOSTNAME}')
+    CSRF_TRUSTED_ORIGINS.append(f'https://<username>.pythonanywhere.com')
 
 CHEMVERSE_APPS = [
     'accounts', 'dashboard', 'chemistry_learning', 'periodic_table', 'compound_search', 'boiling_melting',
     'molecular_structure', 'reaction_builder', 'reaction_balancer', 'chemistry_games', 'chemistry_quiz',
     'molecular_weight', 'lab_simulator', 'chemistry_dictionary', 'community',
 ]
+STATIC_URL = "/static/"
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 INSTALLED_APPS = [
     'django.contrib.admin',
